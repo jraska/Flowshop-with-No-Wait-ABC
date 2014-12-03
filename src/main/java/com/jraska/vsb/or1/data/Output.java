@@ -57,4 +57,26 @@ public final class Output
 	}
 
 	//endregion
+
+	//region Object impl
+
+	@Override
+	public String toString()
+	{
+		StringBuilder b = new StringBuilder(1000);
+		b.append("Schedules:\n");
+
+		for (JobSchedule schedule : mJobSchedules)
+		{
+			b.append(schedule).append(",\n");
+		}
+
+		//remove last comma
+		b.setLength(b.length() - 2);
+
+		return b.toString();
+	}
+
+
+	//endregion
 }
