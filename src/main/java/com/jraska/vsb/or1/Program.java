@@ -2,7 +2,7 @@ package com.jraska.vsb.or1;
 
 import java.util.Arrays;
 
-public class Program
+public final class Program
 {
 	//region Main method
 

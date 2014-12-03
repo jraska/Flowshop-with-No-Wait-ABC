@@ -2,7 +2,7 @@ package com.jraska.vsb.or1.data;
 
 import com.jraska.common.ArgumentCheck;
 
-public class Job
+public final class Job
 {
 	//region Fields
 
