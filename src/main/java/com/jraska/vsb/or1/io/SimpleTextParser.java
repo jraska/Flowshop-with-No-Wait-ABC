@@ -23,25 +23,25 @@ public final class SimpleTextParser implements IInputParser
 		int machinesCount = scanner.nextInt();
 		int jobsCount = scanner.nextInt();
 
-		int[][] allData = new int[jobsCount][machinesCount];
+		int[][] data = new int[jobsCount][machinesCount];
 
 		for (int i = 0; i < machinesCount; i++)
 		{
 			for (int j = 0; j < jobsCount; j++)
 			{
-				allData[j][i] = scanner.nextInt();
+				//save in index reverse order to have job columns in lines
+				data[j][i] = scanner.nextInt();
 			}
 		}
 
 		List<Job> jobs = new ArrayList<Job>();
 		for (int i = 0; i < jobsCount; i++)
 		{
-			jobs.add(new Job(allData[i]));
+			Job job = new Job(data[i]); //job data are stored in line
+			jobs.add(job);
 		}
 
-		Input input = new Input(machinesCount, jobs);
-
-		return input;
+		return new Input(machinesCount, jobs);
 	}
 
 	//endregion
