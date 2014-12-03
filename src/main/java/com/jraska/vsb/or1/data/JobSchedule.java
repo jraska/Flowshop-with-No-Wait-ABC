@@ -35,6 +35,40 @@ public final class JobSchedule
 
 	//region Properties
 
+	public int getStartingTime()
+	{
+		return mStartingTime;
+	}
+
+	public int[] getEndingTimes()
+	{
+		return countEndingTimes(mJob.getDurations(), mStartingTime);
+	}
+
+	public int[] getStartingTimes()
+	{
+		return countStartingTimes(mJob.getDurations(), mStartingTime);
+	}
+
+	public int getOperationsCount()
+	{
+		return mJob.getDurationsCount();
+	}
+
+	public Interval[] getJobIntervals()
+	{
+		return mJobIntervals;
+	}
+
+	public Interval intervalAt(int index)
+	{
+		return mJobIntervals[index];
+	}
+
+	//endregion
+
+	//region Methods
+
 	static Interval[] countIntervals(int[] durations, int start)
 	{
 		int[] startingTimes = countStartingTimes(durations, start);
@@ -79,40 +113,6 @@ public final class JobSchedule
 		}
 
 		return startingTimes;
-	}
-
-	public int getStartingTime()
-	{
-		return mStartingTime;
-	}
-
-	//endregion
-
-	//region Methods
-
-	public int[] getEndingTimes()
-	{
-		return countEndingTimes(mJob.getDurations(), mStartingTime);
-	}
-
-	public int[] getStartingTimes()
-	{
-		return countStartingTimes(mJob.getDurations(), mStartingTime);
-	}
-
-	public int getOperationsCount()
-	{
-		return mJob.getDurationsCount();
-	}
-
-	public Interval[] getJobIntervals()
-	{
-		return mJobIntervals;
-	}
-
-	public Interval intervalAt(int index)
-	{
-		return mJobIntervals[index];
 	}
 
 	//endregion
