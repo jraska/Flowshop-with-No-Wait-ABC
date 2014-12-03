@@ -4,7 +4,6 @@ public final class Interval
 {
 	//region Fields
 
-	//Totally no need of getters
 	private final int mStart;
 	private final int mEnd;
 
