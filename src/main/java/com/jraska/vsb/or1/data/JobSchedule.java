@@ -11,6 +11,8 @@ public final class JobSchedule
 	private final Job mJob;
 	private final int mStartingTime;
 
+	private final Interval[] mJobIntervals;
+
 	//endregion
 
 	//region Constructors
@@ -25,15 +27,36 @@ public final class JobSchedule
 
 		mJob = job;
 		mStartingTime = startingTime;
+
+		mJobIntervals = countIntervals(mJob.getDurations(), startingTime);
 	}
 
 	//endregion
 
 	//region Properties
 
-	public static int[] countEndingTimes(int[] durations, int startingTime)
+	static Interval[] countIntervals(int[] durations, int start)
 	{
-		int[] times = countStartingTimes(durations, startingTime);
+		int[] startingTimes = countStartingTimes(durations, start);
+		int[] endingTimes = countEndingTimes(durations, start);
+
+		return countIntervals(startingTimes, endingTimes);
+	}
+
+	static Interval[] countIntervals(int[] startingTimes, int[] endingTimes)
+	{
+		Interval[] intervals = new Interval[startingTimes.length];
+		for (int i = 0; i < startingTimes.length; i++)
+		{
+			intervals[i] = new Interval(startingTimes[i], endingTimes[i]);
+		}
+
+		return intervals;
+	}
+
+	static int[] countEndingTimes(int[] durations, int start)
+	{
+		int[] times = countStartingTimes(durations, start);
 
 		for (int i = 0; i < durations.length; i++)
 		{
@@ -43,7 +66,7 @@ public final class JobSchedule
 		return times;
 	}
 
-	public static int[] countStartingTimes(int[] durations, final int start)
+	static int[] countStartingTimes(int[] durations, final int start)
 	{
 		int[] startingTimes = new int[durations.length];
 
@@ -63,11 +86,6 @@ public final class JobSchedule
 		return mStartingTime;
 	}
 
-	public int[] getStartingTimes()
-	{
-		return countStartingTimes(mJob.getDurations(), mStartingTime);
-	}
-
 	//endregion
 
 	//region Methods
@@ -77,18 +95,24 @@ public final class JobSchedule
 		return countEndingTimes(mJob.getDurations(), mStartingTime);
 	}
 
+	public int[] getStartingTimes()
+	{
+		return countStartingTimes(mJob.getDurations(), mStartingTime);
+	}
+
+	public int getOperationsCount()
+	{
+		return mJob.getDurationsCount();
+	}
+
 	public Interval[] getJobIntervals()
 	{
-		int[] startingTimes = getStartingTimes();
-		int[] endingTimes = getEndingTimes();
+		return mJobIntervals;
+	}
 
-		Interval[] intervals = new Interval[startingTimes.length];
-		for (int i = 0; i < startingTimes.length; i++)
-		{
-			intervals[i] = new Interval(startingTimes[i], endingTimes[i]);
-		}
-
-		return intervals;
+	public Interval intervalAt(int index)
+	{
+		return mJobIntervals[index];
 	}
 
 	//endregion

@@ -39,5 +39,11 @@ public class IntervalTest
 		assertTrue(c.intersects(b));
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testCannotCreateBadInterval() throws Exception
+	{
+		new Interval(5, 4); //wil throw error
+	}
+
 	//endregion
 }
