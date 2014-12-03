@@ -2,26 +2,36 @@ package com.jraska.vsb.or1.data;
 
 import com.jraska.common.ArgumentCheck;
 
+import java.util.Arrays;
+
 public final class Job
 {
 	//region Fields
 
+	private final String mName;
 	private final int[] mDurations;
 
 	//endregion
 
 	//region Constructors
 
-	public Job(int[] durations)
+	public Job(String name, int[] durations)
 	{
+		ArgumentCheck.notNull(name);
 		ArgumentCheck.notNull(durations);
 
+		mName = name;
 		mDurations = durations;
 	}
 
 	//endregion
 
 	//region Properties
+
+	public String getName()
+	{
+		return mName;
+	}
 
 	public int[] getDurations()
 	{
@@ -31,6 +41,16 @@ public final class Job
 	public int getDurationsCount()
 	{
 		return mDurations.length;
+	}
+
+	//endregion
+
+	//region Object impl
+
+	@Override
+	public String toString()
+	{
+		return "Job" + mName + ", Durations=" + Arrays.toString(mDurations);
 	}
 
 	//endregion

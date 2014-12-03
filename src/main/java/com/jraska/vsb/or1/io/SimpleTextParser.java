@@ -37,7 +37,8 @@ public final class SimpleTextParser implements IInputParser
 		List<Job> jobs = new ArrayList<Job>();
 		for (int i = 0; i < jobsCount; i++)
 		{
-			Job job = new Job(data[i]); //job data are stored in line
+			String name = String.valueOf(i);
+			Job job = new Job(name, data[i]); //job data are stored in line
 			jobs.add(job);
 		}
 
