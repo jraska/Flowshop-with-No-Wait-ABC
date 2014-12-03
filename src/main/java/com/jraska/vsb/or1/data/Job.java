@@ -21,7 +21,7 @@ public final class Job
 		ArgumentCheck.notNull(durations);
 
 		mName = name;
-		mDurations = durations;
+		mDurations = Arrays.copyOf(durations, durations.length);
 	}
 
 	//endregion
@@ -35,7 +35,7 @@ public final class Job
 
 	public int[] getDurations()
 	{
-		return mDurations;
+		return Arrays.copyOf(mDurations, mDurations.length);
 	}
 
 	public int getDurationsCount()

@@ -23,9 +23,10 @@ public final class Input
 		{
 			throw new IllegalArgumentException("There must be at least one machine");
 		}
-		ArgumentCheck.notNull(jobs);
 
-		validateJobs(machinesCount, jobs);
+		ArgumentCheck.notNull(jobs, "jobs");
+
+		validateJobsSize(machinesCount, jobs);
 
 		mMachinesCount = machinesCount;
 		mJobs = Collections.unmodifiableList(jobs);
@@ -35,7 +36,7 @@ public final class Input
 
 	//region Properties
 
-	public static void validateJobs(int machineSize, Iterable<Job> jobs)
+	public static void validateJobsSize(int machineSize, Iterable<Job> jobs)
 	{
 		for (Job job : jobs)
 		{
@@ -59,6 +60,16 @@ public final class Input
 	public int getMachinesCount()
 	{
 		return mMachinesCount;
+	}
+
+	//endregion
+
+	//region Object impl
+
+	@Override
+	public String toString()
+	{
+		return "MachinesCount=" + mMachinesCount + ", Jobs" + mJobs;
 	}
 
 	//endregion
