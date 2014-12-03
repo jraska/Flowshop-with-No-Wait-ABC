@@ -46,7 +46,7 @@ public class SimpleTextParserTest
 	{
 		String input = "1 5\n" +
 				"24 47 309 66 1";
-		int[] expected = {24, 47, 309, 66, 1};
+		int[] expected = {24, 47, 309, 606, 1};
 
 		Input parsedInput = parseInput(input);
 
