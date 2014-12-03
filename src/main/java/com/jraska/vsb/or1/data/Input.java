@@ -9,31 +9,56 @@ public final class Input
 {
 	//region Fields
 
-	private final List<Machine> mMachines;
+	private final int mMachinesCount;
+	private final List<Job> mJobs;
 
 	//endregion
 
 	//region Constructors
 
-	public Input(List<Machine> machines)
-	{
-		ArgumentCheck.notNull(machines);
 
-		mMachines = Collections.unmodifiableList(machines);
+	public Input(int machinesCount, List<Job> jobs)
+	{
+		if (machinesCount < 1)
+		{
+			throw new IllegalArgumentException("There must be at least one machine");
+		}
+		ArgumentCheck.notNull(jobs);
+
+		validateJobs(machinesCount, jobs);
+
+		mMachinesCount = machinesCount;
+		mJobs = Collections.unmodifiableList(jobs);
 	}
 
 	//endregion
 
 	//region Properties
 
-	public List<Machine> getMachines()
+	public static void validateJobs(int machineSize, Iterable<Job> jobs)
 	{
-		return mMachines;
+		for (Job job : jobs)
+		{
+			if (job.getDurationsCount() != machineSize)
+			{
+				String messageBase = "Job %s does not have correct number of durations for %d machines";
+				throw new IllegalArgumentException(String.format(messageBase, job, machineSize));
+			}
+		}
 	}
 
-	public int getSchedulesSize()
+	public List<Job> getJobs()
 	{
-		return mMachines.size();
+		return mJobs;
+	}
+
+	//endregion
+
+	//region Methods
+
+	public int getMachinesCount()
+	{
+		return mMachinesCount;
 	}
 
 	//endregion

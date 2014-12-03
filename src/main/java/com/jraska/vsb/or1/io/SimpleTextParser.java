@@ -2,7 +2,7 @@ package com.jraska.vsb.or1.io;
 
 import com.jraska.common.ArgumentCheck;
 import com.jraska.vsb.or1.data.Input;
-import com.jraska.vsb.or1.data.Machine;
+import com.jraska.vsb.or1.data.Job;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -21,22 +21,32 @@ public class SimpleTextParser implements IInputParser
 		Scanner scanner = new Scanner(inputStream);
 
 		int machinesCount = scanner.nextInt();
-		int size = scanner.nextInt();
+		int jobsCount = scanner.nextInt();
 
-		List<Machine> jobs = new ArrayList<Machine>();
+		int[][] allData = new int[machinesCount][jobsCount];
 
 		for (int i = 0; i < machinesCount; i++)
 		{
-			int[] data = new int[size];
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < jobsCount; j++)
 			{
-				data[j] = scanner.nextInt();
+				allData[i][j] = scanner.nextInt();
 			}
-
-			jobs.add(new Machine(data));
 		}
 
-		Input input = new Input(jobs);
+		List<Job> jobs = new ArrayList<Job>();
+		for (int i = 0; i < jobsCount; i++)
+		{
+			int[] durations = new int[machinesCount];
+
+			for (int j = 0; j < machinesCount; j++)
+			{
+				durations[j] = allData[j][i];
+			}
+
+			jobs.add(new Job(durations));
+		}
+
+		Input input = new Input(machinesCount, jobs);
 
 		return input;
 	}

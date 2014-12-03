@@ -1,7 +1,7 @@
 package com.jraska.vsb.or1.io;
 
 import com.jraska.vsb.or1.data.Input;
-import com.jraska.vsb.or1.data.Machine;
+import com.jraska.vsb.or1.data.Job;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -33,24 +33,35 @@ public class SimpleTextParserTest
 		Input parsedInput = parseInput(input);
 
 		assertThat(parsedInput, notNullValue());
-		assertThat(parsedInput.getSchedulesSize(), equalTo(10));
+		assertThat(parsedInput.getMachinesCount(), equalTo(10));
 
-		for (Machine job : parsedInput.getMachines())
+		for (Job job : parsedInput.getJobs())
 		{
-			assertThat(job.geJobsCount(), equalTo(50));
+			assertThat(job.getDurationsCount(), equalTo(10));
 		}
 	}
 
 	@Test
 	public void testParsedData() throws Exception
 	{
-		String input = "1 5\n" +
-				"24 47 309 66 1";
+		String input = "5 1\n" +
+				"24\n47\n309\n66\n1";
 		int[] expected = {24, 47, 309, 66, 1};
 
 		Input parsedInput = parseInput(input);
 
-		assertThat(parsedInput.getMachines().get(0).getJobs(), equalTo(expected));
+		assertThat(parsedInput.getJobs().get(0).getDurations(), equalTo(expected));
+	}
+
+	@Test
+	public void testAddJobs() throws Exception
+	{
+		String input = "5 1\n" +
+				"24\n47\n309\n66\n1";
+
+		Input parsedInput = parseInput(input);
+
+		assertThat(parsedInput.getJobs().size(), equalTo(1));
 	}
 
 	//endregion
