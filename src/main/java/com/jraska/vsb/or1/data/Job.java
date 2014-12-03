@@ -20,6 +20,11 @@ public final class Job
 		ArgumentCheck.notNull(name);
 		ArgumentCheck.notNull(durations);
 
+		if (durations.length == 0)
+		{
+			throw new IllegalArgumentException("Job must have at least one operation.");
+		}
+
 		mName = name;
 		mDurations = Arrays.copyOf(durations, durations.length);
 	}
