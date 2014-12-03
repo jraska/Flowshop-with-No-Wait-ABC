@@ -1,5 +1,4 @@
 apply plugin: 'java'
-
 version = '0.1'
 
 repositories {
@@ -15,3 +14,4 @@ jar {
         attributes 'Main-Class': 'com.jraska.vsb.or1.Program'
     }
 }
+
