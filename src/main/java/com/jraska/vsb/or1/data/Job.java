@@ -48,6 +48,18 @@ public final class Job
 		return mDurations.length;
 	}
 
+	public int getTotalDuration()
+	{
+		int sum = 0;
+
+		for (int duration : mDurations)
+		{
+			sum += duration;
+		}
+
+		return sum;
+	}
+
 	//endregion
 
 	//region Object impl

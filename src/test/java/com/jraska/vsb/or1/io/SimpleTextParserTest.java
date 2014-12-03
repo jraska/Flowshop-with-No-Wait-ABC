@@ -68,7 +68,7 @@ public class SimpleTextParserTest
 
 	//region Methods
 
-	protected Input parseInput(String input)
+	public static Input parseInput(String input)
 	{
 		SimpleTextParser simpleTextParser = new SimpleTextParser();
 

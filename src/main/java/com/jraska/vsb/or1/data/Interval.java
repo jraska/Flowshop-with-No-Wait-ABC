@@ -7,6 +7,8 @@ public final class Interval
 	private final int mStart;
 	private final int mEnd;
 
+	private final int mLength;
+
 	//endregion
 
 	//region Constructors
@@ -21,6 +23,8 @@ public final class Interval
 
 		mStart = start;
 		mEnd = end;
+
+		mLength = end - start;
 	}
 
 	//endregion
@@ -35,6 +39,11 @@ public final class Interval
 	public int getEnd()
 	{
 		return mEnd;
+	}
+
+	public int getLength()
+	{
+		return mLength;
 	}
 
 	//endregion

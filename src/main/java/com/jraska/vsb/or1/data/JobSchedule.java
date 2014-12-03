@@ -9,7 +9,7 @@ public final class JobSchedule
 	//region Fields
 
 	private final Job mJob;
-	private final int mStartingTime;
+	private final int mStartTime;
 
 	private final Interval[] mJobIntervals;
 
@@ -17,37 +17,42 @@ public final class JobSchedule
 
 	//region Constructors
 
-	public JobSchedule(Job job, int startingTime)
+	public JobSchedule(Job job, int startTime)
 	{
 		ArgumentCheck.notNull(job, "job");
-		if (startingTime < 0)
+		if (startTime < 0)
 		{
-			throw new IllegalArgumentException(String.format("Starting time must be at least zero, not %d.", startingTime));
+			throw new IllegalArgumentException(String.format("Starting time must be at least zero, not %d.", startTime));
 		}
 
 		mJob = job;
-		mStartingTime = startingTime;
+		mStartTime = startTime;
 
-		mJobIntervals = countIntervals(mJob.getDurations(), startingTime);
+		mJobIntervals = countIntervals(mJob.getDurations(), startTime);
 	}
 
 	//endregion
 
 	//region Properties
 
-	public int getStartingTime()
+	public int getStartTime()
 	{
-		return mStartingTime;
+		return mStartTime;
 	}
 
-	public int[] getEndingTimes()
+	public String getJobName()
 	{
-		return countEndingTimes(mJob.getDurations(), mStartingTime);
+		return mJob.getName();
+	}
+
+	public int[] getDepartureTimes()
+	{
+		return countDepartureTimes(mJob.getDurations(), mStartTime);
 	}
 
 	public int[] getStartingTimes()
 	{
-		return countStartingTimes(mJob.getDurations(), mStartingTime);
+		return countStartingTimes(mJob.getDurations(), mStartTime);
 	}
 
 	public int getOperationsCount()
@@ -60,19 +65,40 @@ public final class JobSchedule
 		return mJobIntervals;
 	}
 
-	public Interval intervalAt(int index)
+
+	public int getFinishTime()
 	{
-		return mJobIntervals[index];
+		return mJobIntervals[mJobIntervals.length - 1].getEnd();
 	}
 
 	//endregion
 
 	//region Methods
 
+	public Interval intervalAt(int index)
+	{
+		return mJobIntervals[index];
+	}
+
+	public int indexForInterval(Interval interval)
+	{
+		ArgumentCheck.notNull(interval);
+
+		for (int i = 0; i < mJobIntervals.length; i++)
+		{
+			if (mJobIntervals[i].equals(interval))
+			{
+				return i;
+			}
+		}
+
+		throw new IllegalArgumentException("There is no such interval in this job.");
+	}
+
 	static Interval[] countIntervals(int[] durations, int start)
 	{
 		int[] startingTimes = countStartingTimes(durations, start);
-		int[] endingTimes = countEndingTimes(durations, start);
+		int[] endingTimes = countDepartureTimes(durations, start);
 
 		return countIntervals(startingTimes, endingTimes);
 	}
@@ -88,7 +114,7 @@ public final class JobSchedule
 		return intervals;
 	}
 
-	static int[] countEndingTimes(int[] durations, int start)
+	static int[] countDepartureTimes(int[] durations, int start)
 	{
 		int[] times = countStartingTimes(durations, start);
 
@@ -122,7 +148,7 @@ public final class JobSchedule
 	@Override
 	public String toString()
 	{
-		return "Schedule for job " + mJob.getName() + "Running intervals: " + Arrays.toString(getJobIntervals());
+		return "Schedule for job " + mJob.getName() + " Running intervals: " + Arrays.toString(getJobIntervals());
 	}
 
 	//endregion

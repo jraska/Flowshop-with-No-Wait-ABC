@@ -31,7 +31,7 @@ public class JobScheduleTest
 		int startTime = 3;
 		JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), startTime);
 
-		int[] endingTimes = jobSchedule.getEndingTimes();
+		int[] endingTimes = jobSchedule.getDepartureTimes();
 
 		int[] expected = {8, 11, 18, 20};
 		assertThat(endingTimes, equalTo(expected));
