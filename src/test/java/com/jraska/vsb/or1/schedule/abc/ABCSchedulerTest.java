@@ -25,10 +25,10 @@ public class ABCSchedulerTest
 		Bee[] bees = new Bee[20];
 		for (int i = 0; i < 20; i++)
 		{
-			bees[i] = new Bee(swap);
+			bees[i] = new Bee(swap, makespanCounter);
 		}
 
-		ABCScheduler abcScheduler = new ABCScheduler(bees, makespanCounter, randomPositionGenerator, wheelSelection, 5);
+		ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 5);
 		Output schedule = abcScheduler.schedule(input);
 
 		NoWaitFlowShopValidatorTest.validate(schedule);

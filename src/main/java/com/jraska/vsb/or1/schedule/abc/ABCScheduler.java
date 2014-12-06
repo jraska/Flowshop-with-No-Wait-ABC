@@ -5,7 +5,6 @@ import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Job;
 import com.jraska.vsb.or1.data.JobSchedule;
 import com.jraska.vsb.or1.data.Output;
-import com.jraska.vsb.or1.schedule.IObjectiveFunction;
 import com.jraska.vsb.or1.schedule.IPositionGenerator;
 import com.jraska.vsb.or1.schedule.IScheduler;
 
@@ -21,7 +20,6 @@ public class ABCScheduler implements IScheduler
 
 	private final Bee[] mBees;
 	private final int mAttemptsThreshold;
-	private final IObjectiveFunction mObjectiveFunction;
 	private final IPositionGenerator mPositionGenerator;
 	private final int mOnlookersCount;
 	private final IOnlookerChooser mOnlookerChooser;
@@ -34,11 +32,9 @@ public class ABCScheduler implements IScheduler
 
 	//region Constructors
 
-	public ABCScheduler(Bee[] bees, IObjectiveFunction objectiveFunction,
-	                    IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold)
+	public ABCScheduler(Bee[] bees, IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold)
 	{
 		ArgumentCheck.notNull(bees);
-		ArgumentCheck.notNull(objectiveFunction);
 		ArgumentCheck.notNull(generator);
 		ArgumentCheck.notNull(onlookerChooser);
 
@@ -47,9 +43,7 @@ public class ABCScheduler implements IScheduler
 			throw new IllegalArgumentException("Attempts threshold must be positive");
 		}
 
-
 		mBees = Arrays.copyOf(bees, bees.length);
-		mObjectiveFunction = objectiveFunction;
 		mPositionGenerator = generator;
 		mOnlookerChooser = onlookerChooser;
 		mAttemptsThreshold = attemptsThreshold;
@@ -112,7 +106,7 @@ public class ABCScheduler implements IScheduler
 
 	protected void localSearch(Bee bee)
 	{
-		boolean foundBetter = bee.searchForNewPosition(mObjectiveFunction);
+		boolean foundBetter = bee.searchForNewPosition();
 		if (foundBetter)
 		{
 			if (bee.mPositionValue < mBestValue)
@@ -125,7 +119,7 @@ public class ABCScheduler implements IScheduler
 
 	protected void scout(Bee bee)
 	{
-		int value = bee.sendScounting(mPositionGenerator, mObjectiveFunction);
+		int value = bee.sendScouting(mPositionGenerator);
 		if (value < mBestValue)
 		{
 			mBestSolution = bee.getPosition();

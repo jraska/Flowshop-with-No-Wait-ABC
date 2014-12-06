@@ -18,16 +18,19 @@ public class Bee
 	int mCountOfMisses;
 
 	private final ILocalSearchStrategy mLocalSearchStrategy;
+	private final IObjectiveFunction mObjectiveFunction;
 
 	//endregion
 
 	//region Constructors
 
-	public Bee(ILocalSearchStrategy localSearchStrategy)
+	public Bee(ILocalSearchStrategy localSearchStrategy, IObjectiveFunction objectiveFunction)
 	{
 		ArgumentCheck.notNull(localSearchStrategy);
+		ArgumentCheck.notNull(objectiveFunction);
 
 		mLocalSearchStrategy = localSearchStrategy;
+		mObjectiveFunction = objectiveFunction;
 	}
 
 	//endregion
@@ -58,21 +61,21 @@ public class Bee
 
 	//region Methods
 
-	public int sendScounting(IPositionGenerator generator, IObjectiveFunction objectiveFunction)
+	public int sendScouting(IPositionGenerator generator)
 	{
 		mPosition = generator.generate();
-		mPositionValue = objectiveFunction.evaluate(mPosition);
+		mPositionValue = mObjectiveFunction.evaluate(mPosition);
 
 		onBetterFound();
 
 		return mPositionValue;
 	}
 
-	public boolean searchForNewPosition(IObjectiveFunction function)
+	public boolean searchForNewPosition()
 	{
 		int[] next = mLocalSearchStrategy.getNext(mPosition);
 
-		int value = function.evaluate(next);
+		int value = mObjectiveFunction.evaluate(next);
 		if (value < mPositionValue)
 		{
 			mPositionValue = value;
