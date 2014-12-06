@@ -11,6 +11,9 @@ public final class Input
 	private final int mMachinesCount;
 	private final Job[] mJobs;
 
+	//TODO: remove mutable field
+	private String mName;
+
 	//endregion
 
 	//region Constructors
@@ -34,6 +37,16 @@ public final class Input
 	//endregion
 
 	//region Properties
+
+	public String getName()
+	{
+		return mName;
+	}
+
+	public void setName(String name)
+	{
+		mName = name;
+	}
 
 	public static void validateJobsSize(int machineSize, Job[] jobs)
 	{

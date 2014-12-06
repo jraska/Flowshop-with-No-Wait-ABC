@@ -15,10 +15,7 @@ import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
 import com.jraska.vsb.or1.schedule.abc.RouletteWheelSelection;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.List;
 
 public class Program
@@ -69,6 +66,8 @@ public class Program
 
 		for (Input input : inputs)
 		{
+			_out.println("--------" + input.getName() + "----------");
+
 			IScheduler scheduler = createScheduler(input);
 			Output output = scheduler.schedule(input);
 
@@ -93,7 +92,7 @@ public class Program
 
 			stopWatch.stop();
 			_out.println("- Validation took " + stopWatch.getElapsedMs() + " ms");
-			stopWatch.reset();
+			stopWatch.restart();
 
 			if (!validationResult.isEmpty())
 			{
@@ -107,6 +106,9 @@ public class Program
 					_out.println(error);
 				}
 			}
+
+			_out.println("-----------------------");
+			_out.println();
 		}
 	}
 
@@ -123,16 +125,32 @@ public class Program
 			throw new IllegalArgumentException("There must be arg with file path.");
 		}
 
-		String path = args[0];
+		File[] files = getFiles(args);
+		Input[] inputs = new Input[files.length];
 
-		FileInputStream fileInputStream = new FileInputStream(new File(path));
-		SimpleTextParser parser = new SimpleTextParser();
-		Input input = parser.parse(fileInputStream);
-		fileInputStream.close();
-
-		Input[] inputs = {input};
+		for (int i = 0; i < files.length; i++)
+		{
+			inputs[i] = parseInput(new FileInputStream(files[i]));
+			inputs[i].setName(files[i].getName());
+		}
 
 		return inputs;
+	}
+
+	protected File[] getFiles(String[] args)
+	{
+		String path = args[0];
+
+		File[] files = {new File(path)};
+		return files;
+	}
+
+	protected Input parseInput(InputStream inputStream) throws IOException
+	{
+		SimpleTextParser parser = new SimpleTextParser();
+		Input input = parser.parse(inputStream);
+		inputStream.close();
+		return input;
 	}
 
 	protected void referenceSchedule(Input input)
