@@ -1,15 +1,12 @@
-package com.jraska.vsb.or1.schedule;
+package com.jraska.vsb.or1.schedule.abc;
 
 import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Output;
-import com.jraska.vsb.or1.schedule.abc.ABCScheduler;
-import com.jraska.vsb.or1.schedule.abc.Bee;
-import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
+import com.jraska.vsb.or1.schedule.RandomPositionGenerator;
+import com.jraska.vsb.or1.schedule.SimpleSchedulerTest;
+import com.jraska.vsb.or1.schedule.Swap;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidatorTest;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ABCSchedulerTest
 {
@@ -22,17 +19,21 @@ public class ABCSchedulerTest
 
 		MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
 		RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
+		RouletteWheelSelection wheelSelection = new RouletteWheelSelection();
 
-		List<Bee> bees = new ArrayList<Bee>(20);
+		Swap swap = new Swap();
+		Bee[] bees = new Bee[20];
 		for (int i = 0; i < 20; i++)
 		{
-			bees.add(new Bee());
+			bees[i] = new Bee(swap);
 		}
 
-		ABCScheduler abcScheduler = new ABCScheduler(bees, makespanCounter, randomPositionGenerator, 5);
+		ABCScheduler abcScheduler = new ABCScheduler(bees, makespanCounter, randomPositionGenerator, wheelSelection, 5);
 		Output schedule = abcScheduler.schedule(input);
 
 		NoWaitFlowShopValidatorTest.validate(schedule);
+
+		System.out.println(schedule);
 	}
 
 	//endregion

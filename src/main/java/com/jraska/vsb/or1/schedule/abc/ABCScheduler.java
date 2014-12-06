@@ -9,7 +9,7 @@ import com.jraska.vsb.or1.schedule.IObjectiveFunction;
 import com.jraska.vsb.or1.schedule.IPositionGenerator;
 import com.jraska.vsb.or1.schedule.IScheduler;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,10 +19,12 @@ public class ABCScheduler implements IScheduler
 {
 	//region Fields
 
-	private final List<Bee> mBees;
+	private final Bee[] mBees;
 	private final int mAttemptsThreshold;
 	private final IObjectiveFunction mObjectiveFunction;
-	private final IPositionGenerator mStartSolutionGenerator;
+	private final IPositionGenerator mPositionGenerator;
+	private final int mOnlookersCount;
+	private final IOnlookerChooser mOnlookerChooser;
 
 
 	private int[] mBestSolution;
@@ -32,12 +34,13 @@ public class ABCScheduler implements IScheduler
 
 	//region Constructors
 
-	public ABCScheduler(List<Bee> bees, IObjectiveFunction objectiveFunction,
-	                    IPositionGenerator generator, int attemptsThreshold)
+	public ABCScheduler(Bee[] bees, IObjectiveFunction objectiveFunction,
+	                    IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold)
 	{
 		ArgumentCheck.notNull(bees);
 		ArgumentCheck.notNull(objectiveFunction);
 		ArgumentCheck.notNull(generator);
+		ArgumentCheck.notNull(onlookerChooser);
 
 		if (attemptsThreshold < 1)
 		{
@@ -45,10 +48,14 @@ public class ABCScheduler implements IScheduler
 		}
 
 
-		mBees = Collections.unmodifiableList(bees);
+		mBees = Arrays.copyOf(bees, bees.length);
 		mObjectiveFunction = objectiveFunction;
-		mStartSolutionGenerator = generator;
+		mPositionGenerator = generator;
+		mOnlookerChooser = onlookerChooser;
 		mAttemptsThreshold = attemptsThreshold;
+
+		//same size of onlookers as bees
+		mOnlookersCount = bees.length;
 	}
 
 	//endregion
@@ -66,31 +73,64 @@ public class ABCScheduler implements IScheduler
 		//setup Bees
 		for (Bee bee : mBees)
 		{
-			bee.mPosition = mStartSolutionGenerator.generate();
-			bee.mPositionValue = mObjectiveFunction.evaluate(bee.mPosition);
-
-			if (bee.mPositionValue < mBestValue)
-			{
-				mBestValue = bee.mPositionValue;
-				mBestSolution = bee.mPosition;
-			}
+			scout(bee);
 		}
-
 
 		for (int i = 0; i < 1000; i++)
 		{
-			//TODO: steps of ABC algorithm
 			//search near bees
+			double fitnessSum = 0;
+			for (Bee bee : mBees)
+			{
+				localSearch(bee);
+
+				fitnessSum += bee.getFitnessValue();
+			}
 
 			//send onlookers
+			for (int j = 0; j < mOnlookersCount; j++)
+			{
+				Bee bee = mOnlookerChooser.selectBee(mBees, fitnessSum);
+				localSearch(bee);
+			}
 
 			//make scout and send them back
+			for (Bee bee : mBees)
+			{
+				if (bee.mCountOfMisses >= mAttemptsThreshold)
+				{
+					scout(bee);
+				}
+			}
 		}
 
 		Job[] bestSequence = input.getWithOrder(mBestSolution);
 		List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(bestSequence);
 
 		return new Output(jobSchedules, input);
+	}
+
+	protected void localSearch(Bee bee)
+	{
+		boolean foundBetter = bee.searchForNewPosition(mObjectiveFunction);
+		if (foundBetter)
+		{
+			if (bee.mPositionValue < mBestValue)
+			{
+				mBestValue = bee.mPositionValue;
+				mBestSolution = bee.mPosition;
+			}
+		}
+	}
+
+	protected void scout(Bee bee)
+	{
+		int value = bee.sendScounting(mPositionGenerator, mObjectiveFunction);
+		if (value < mBestValue)
+		{
+			mBestSolution = bee.getPosition();
+			mBestValue = value;
+		}
 	}
 
 	//endregion

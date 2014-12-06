@@ -69,6 +69,7 @@ public final class Output
 	public String toString()
 	{
 		StringBuilder b = new StringBuilder(1000);
+		b.append("Makespan: ").append(getMakespan()).append("\n");
 		b.append("Schedules:\n");
 
 		for (JobSchedule schedule : mJobSchedules)
