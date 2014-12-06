@@ -6,7 +6,6 @@ import com.jraska.vsb.or1.data.Job;
 import com.jraska.vsb.or1.data.JobSchedule;
 import com.jraska.vsb.or1.data.Output;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,32 +22,16 @@ public final class SimpleScheduler implements IScheduler
 
 		Job[] jobs = input.getJobs();
 
-		List<JobSchedule> schedules = new ArrayList<JobSchedule>(jobs.length);
-
-		JobSchedule previous = new JobSchedule(jobs[0], 0);//first starts immediately
-		schedules.add(previous);
-
-		for (int i = 1; i < jobs.length; i++)
-		{
-			Job next = jobs[i];
-			int nextStart = calculateNextStart(previous, next);
-
-			previous = new JobSchedule(next, nextStart);
-			schedules.add(previous);
-		}
+		List<JobSchedule> schedules = createJobSchedules(jobs);
 
 		return new Output(schedules, input);
 	}
 
-	//endregion
-
-	//region Methods
-
-	protected int calculateNextStart(JobSchedule previous, Job next)
+	protected List<JobSchedule> createJobSchedules(Job[] jobs)
 	{
-		return previous.getStartTime() + previous.getDelay(next);
+		return JobSchedule.createJobSchedules(jobs);
 	}
 
-
 	//endregion
+
 }

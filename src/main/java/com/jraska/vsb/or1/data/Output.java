@@ -56,6 +56,11 @@ public final class Output
 		return sum;
 	}
 
+	public int getMakespan()
+	{
+		return mJobSchedules.get(mJobSchedules.size() - 1).getFinishTime();
+	}
+
 	//endregion
 
 	//region Object impl

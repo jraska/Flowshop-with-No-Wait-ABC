@@ -50,5 +50,20 @@ public class JobScheduleTest
 		assertThat(jobSchedule.getJobIntervals(), equalTo(expected));
 	}
 
+	@Test
+	public void testCalculateNextStartTime() throws Exception
+	{
+		int[] durations = {5, 4, 4, 3};
+
+		JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), 0);
+
+		int[] nextDurations = {5, 4, 4, 6};
+		Job nextJob = new Job("TestJob2", nextDurations);
+
+		int start = JobSchedule.calculateNextStart(jobSchedule, nextJob);
+
+		assertThat("Bad start found.", start, equalTo(5));
+	}
+
 	//endregion
 }

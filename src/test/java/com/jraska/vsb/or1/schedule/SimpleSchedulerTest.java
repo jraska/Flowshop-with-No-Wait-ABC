@@ -1,7 +1,6 @@
 package com.jraska.vsb.or1.schedule;
 
 import com.jraska.vsb.or1.data.Input;
-import com.jraska.vsb.or1.data.Job;
 import com.jraska.vsb.or1.data.JobSchedule;
 import com.jraska.vsb.or1.data.Output;
 import com.jraska.vsb.or1.io.SimpleTextParserTest;
@@ -25,22 +24,6 @@ public class SimpleSchedulerTest
 	//endregion
 
 	//region Test Methods
-
-	@Test
-	public void testCalculateNextStartTime() throws Exception
-	{
-		int[] durations = {5, 4, 4, 3};
-
-		JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), 0);
-
-		int[] nextDurations = {5, 4, 4, 6};
-		Job nextJob = new Job("TestJob2", nextDurations);
-
-		SimpleScheduler simpleScheduler = new SimpleScheduler();
-		int start = simpleScheduler.calculateNextStart(jobSchedule, nextJob);
-
-		assertThat("Bad start found.", start, equalTo(5));
-	}
 
 	@Test
 	public void testProducesValidSolution() throws Exception

@@ -2,7 +2,9 @@ package com.jraska.vsb.or1.data;
 
 import com.jraska.common.ArgumentCheck;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public final class JobSchedule
 {
@@ -148,6 +150,29 @@ public final class JobSchedule
 		}
 
 		return startingTimes;
+	}
+
+	public static List<JobSchedule> createJobSchedules(Job[] jobs)
+	{
+		List<JobSchedule> schedules = new ArrayList<JobSchedule>(jobs.length);
+
+		JobSchedule previous = new JobSchedule(jobs[0], 0);//first starts immediately
+		schedules.add(previous);
+
+		for (int i = 1; i < jobs.length; i++)
+		{
+			Job next = jobs[i];
+			int nextStart = calculateNextStart(previous, next);
+
+			previous = new JobSchedule(next, nextStart);
+			schedules.add(previous);
+		}
+		return schedules;
+	}
+
+	protected static int calculateNextStart(JobSchedule previous, Job next)
+	{
+		return previous.getStartTime() + previous.getDelay(next);
 	}
 
 	//endregion
