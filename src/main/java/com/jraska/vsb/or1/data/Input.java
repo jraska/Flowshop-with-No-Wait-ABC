@@ -2,22 +2,21 @@ package com.jraska.vsb.or1.data;
 
 import com.jraska.common.ArgumentCheck;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 public final class Input
 {
 	//region Fields
 
 	private final int mMachinesCount;
-	private final List<Job> mJobs;
+	private final Job[] mJobs;
 
 	//endregion
 
 	//region Constructors
 
 
-	public Input(int machinesCount, List<Job> jobs)
+	public Input(int machinesCount, Job[] jobs)
 	{
 		if (machinesCount < 1)
 		{
@@ -29,14 +28,14 @@ public final class Input
 		validateJobsSize(machinesCount, jobs);
 
 		mMachinesCount = machinesCount;
-		mJobs = Collections.unmodifiableList(jobs);
+		mJobs = Arrays.copyOf(jobs, jobs.length);
 	}
 
 	//endregion
 
 	//region Properties
 
-	public static void validateJobsSize(int machineSize, Iterable<Job> jobs)
+	public static void validateJobsSize(int machineSize, Job[] jobs)
 	{
 		for (Job job : jobs)
 		{
@@ -48,7 +47,7 @@ public final class Input
 		}
 	}
 
-	public List<Job> getJobs()
+	public Job[] getJobs()
 	{
 		return mJobs;
 	}
@@ -69,7 +68,7 @@ public final class Input
 	@Override
 	public String toString()
 	{
-		return "MachinesCount=" + mMachinesCount + ", Jobs" + mJobs;
+		return "MachinesCount=" + mMachinesCount + ", Jobs" + Arrays.toString(mJobs);
 	}
 
 	//endregion

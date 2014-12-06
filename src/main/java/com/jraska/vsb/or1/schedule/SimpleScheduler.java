@@ -1,7 +1,10 @@
 package com.jraska.vsb.or1.schedule;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.vsb.or1.data.*;
+import com.jraska.vsb.or1.data.Input;
+import com.jraska.vsb.or1.data.Job;
+import com.jraska.vsb.or1.data.JobSchedule;
+import com.jraska.vsb.or1.data.Output;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
 /**
  * Dummy implementation which just put jobs to line and verify validators of output.
  */
-public class SimpleScheduler implements IScheduler
+public final class SimpleScheduler implements IScheduler
 {
 	//region IScheduler impl
 
@@ -18,16 +21,16 @@ public class SimpleScheduler implements IScheduler
 	{
 		ArgumentCheck.notNull(input);
 
-		List<Job> jobs = input.getJobs();
+		Job[] jobs = input.getJobs();
 
-		List<JobSchedule> schedules = new ArrayList<JobSchedule>(jobs.size());
+		List<JobSchedule> schedules = new ArrayList<JobSchedule>(jobs.length);
 
-		JobSchedule previous = new JobSchedule(jobs.get(0), 0);//first starts immediately
+		JobSchedule previous = new JobSchedule(jobs[0], 0);//first starts immediately
 		schedules.add(previous);
 
-		for (int i = 1; i < jobs.size(); i++)
+		for (int i = 1; i < jobs.length; i++)
 		{
-			Job next = jobs.get(i);
+			Job next = jobs[i];
 			int nextStart = calculateNextStart(previous, next);
 
 			previous = new JobSchedule(next, nextStart);
@@ -43,27 +46,9 @@ public class SimpleScheduler implements IScheduler
 
 	protected int calculateNextStart(JobSchedule previous, Job next)
 	{
-		Interval[] intervals = previous.getJobIntervals();
-
-		int time = intervals[0].getEnd();
-
-		int[] durations = next.getDurations();
-		for (int i = 0, end = intervals.length - 1; i < end; i++)
-		{
-			time += durations[i];
-			int latestPossibleEnd = intervals[i + 1].getEnd();
-			if (latestPossibleEnd > time)
-			{
-				int diff = latestPossibleEnd - time;
-				time += diff;
-			}
-		}
-
-		time += durations[durations.length - 1];
-
-		//time is now finish time
-		return time - next.getTotalDuration();
+		return previous.getStartTime() + previous.getDelay(next);
 	}
+
 
 	//endregion
 }

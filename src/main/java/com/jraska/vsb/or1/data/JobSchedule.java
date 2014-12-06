@@ -65,6 +65,15 @@ public final class JobSchedule
 		return mJobIntervals;
 	}
 
+	public int[] getDurations()
+	{
+		return mJob.getDurations();
+	}
+
+	public int getDelay(Job next)
+	{
+		return mJob.getDepartureDelay(next);
+	}
 
 	public int getFinishTime()
 	{

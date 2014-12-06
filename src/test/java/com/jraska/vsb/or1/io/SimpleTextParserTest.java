@@ -50,7 +50,7 @@ public class SimpleTextParserTest
 
 		Input parsedInput = parseInput(input);
 
-		assertThat(parsedInput.getJobs().get(0).getDurations(), equalTo(expected));
+		assertThat(parsedInput.getJobs()[0].getDurations(), equalTo(expected));
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class SimpleTextParserTest
 
 		Input parsedInput = parseInput(input);
 
-		assertThat(parsedInput.getJobs().size(), equalTo(1));
+		assertThat(parsedInput.getJobs().length, equalTo(1));
 	}
 
 	//endregion

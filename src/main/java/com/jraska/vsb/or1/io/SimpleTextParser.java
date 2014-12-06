@@ -5,8 +5,6 @@ import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Job;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public final class SimpleTextParser implements IInputParser
@@ -34,12 +32,12 @@ public final class SimpleTextParser implements IInputParser
 			}
 		}
 
-		List<Job> jobs = new ArrayList<Job>();
+		Job[] jobs = new Job[jobsCount];
 		for (int i = 0; i < jobsCount; i++)
 		{
 			String name = String.valueOf(i + 1);
 			Job job = new Job(name, data[i]); //job data are stored in line
-			jobs.add(job);
+			jobs[i] = job;
 		}
 
 		return new Input(machinesCount, jobs);
