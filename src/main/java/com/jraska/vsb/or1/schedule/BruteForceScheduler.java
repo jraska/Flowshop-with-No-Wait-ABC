@@ -6,7 +6,6 @@ import com.jraska.vsb.or1.data.Job;
 import com.jraska.vsb.or1.data.JobSchedule;
 import com.jraska.vsb.or1.data.Output;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +14,9 @@ public class BruteForceScheduler implements IScheduler
 	//region Fields
 
 	private final IObjectiveFunction mObjectiveFunction;
+
+	private int[] mBestSoFar;
+	private int mMinSoFar;
 
 	//endregion
 
@@ -36,28 +38,19 @@ public class BruteForceScheduler implements IScheduler
 	{
 		ArgumentCheck.notNull(input);
 
+		mBestSoFar = null;
+		mMinSoFar = Integer.MAX_VALUE;
+
 		final int length = input.getJobs().length;
 
-		List<int[]> permutations = permutations(length);
+		permutations(length);
 
-		int[] bestSoFar = null;
-		int minSoFar = Integer.MAX_VALUE;
-		for (int[] permutation : permutations)
-		{
-			int value = mObjectiveFunction.evaluate(permutation);
-			if (value < minSoFar)
-			{
-				minSoFar = value;
-				bestSoFar = permutation;
-			}
-		}
-
-		if (bestSoFar == null)
+		if (mBestSoFar == null)
 		{
 			throw new IllegalStateException("Ensures something is there.");
 		}
 
-		Job[] order = input.getWithOrder(bestSoFar);
+		Job[] order = input.getWithOrder(mBestSoFar);
 
 		List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(order);
 		return new Output(jobSchedules, input);
@@ -67,7 +60,7 @@ public class BruteForceScheduler implements IScheduler
 
 	//region Methods
 
-	static List<int[]> permutations(int n)
+	private void permutations(int n)
 	{
 		int[] a = new int[n];
 		for (int i = 0; i < n; i++)
@@ -75,23 +68,26 @@ public class BruteForceScheduler implements IScheduler
 			a[i] = i;
 		}
 
-		List<int[]> ret = new ArrayList<int[]>();
-		permutation(a, 0, ret);
-		return ret;
+		permutation(a, 0);
 	}
 
-	public static void permutation(int[] arr, int pos, List<int[]> list)
+	private void permutation(int[] arr, int pos)
 	{
 		if (arr.length - pos == 1)
 		{
-			list.add(arr.clone());
+			int value = mObjectiveFunction.evaluate(arr);
+			if (value < mMinSoFar)
+			{
+				mMinSoFar = value;
+				mBestSoFar = arr.clone();
+			}
 		}
 		else
 		{
 			for (int i = pos; i < arr.length; i++)
 			{
 				swap(arr, pos, i);
-				permutation(arr, pos + 1, list);
+				permutation(arr, pos + 1);
 				swap(arr, pos, i);
 			}
 		}

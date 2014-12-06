@@ -18,7 +18,9 @@ public class ToStringOutputWriter implements IOutputWriter
 
 		try
 		{
+			outputStream.write("\nFINAL RESULT:\n".getBytes());
 			outputStream.write(output.toString().getBytes());
+			outputStream.write("\n".getBytes());
 		}
 		catch (IOException e)
 		{
