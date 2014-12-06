@@ -15,7 +15,7 @@ public class Bee
 	int mPositionValue;
 	private double mFitnessValue;
 
-	int mCountOfMisses;
+	private int mCountOfMisses;
 
 	private final ILocalSearchStrategy mLocalSearchStrategy;
 	private final IObjectiveFunction mObjectiveFunction;
@@ -66,7 +66,7 @@ public class Bee
 		mPosition = generator.generate();
 		mPositionValue = mObjectiveFunction.evaluate(mPosition);
 
-		onBetterFound();
+		onNewFound();
 
 		return mPositionValue;
 	}
@@ -94,6 +94,11 @@ public class Bee
 	}
 
 	protected void onBetterFound()
+	{
+		onNewFound();
+	}
+
+	private void onNewFound()
 	{
 		mCountOfMisses = 0;
 

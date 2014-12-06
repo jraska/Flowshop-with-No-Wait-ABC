@@ -5,14 +5,8 @@ import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Output;
 import com.jraska.vsb.or1.io.SimpleTextParser;
 import com.jraska.vsb.or1.io.ToStringOutputWriter;
-import com.jraska.vsb.or1.schedule.IScheduler;
-import com.jraska.vsb.or1.schedule.RandomPositionGenerator;
-import com.jraska.vsb.or1.schedule.SimpleScheduler;
-import com.jraska.vsb.or1.schedule.Swap;
-import com.jraska.vsb.or1.schedule.abc.ABCScheduler;
-import com.jraska.vsb.or1.schedule.abc.Bee;
-import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
-import com.jraska.vsb.or1.schedule.abc.RouletteWheelSelection;
+import com.jraska.vsb.or1.schedule.*;
+import com.jraska.vsb.or1.schedule.abc.*;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
 import java.io.*;
@@ -176,11 +170,21 @@ public class Program
 		Bee[] bees = new Bee[20];
 		for (int i = 0; i < 20; i++)
 		{
-			bees[i] = new Bee(swap, makespanCounter);
+			bees[i] = createBee(swap, makespanCounter);
 		}
 
-		ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 10);
+		ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, getMaxMissThreshold());
 		return abcScheduler;
+	}
+
+	protected int getMaxMissThreshold()
+	{
+		return 10;
+	}
+
+	protected Bee createBee(ILocalSearchStrategy strategy, IObjectiveFunction function)
+	{
+		return new Bee(strategy, function);
 	}
 
 	//endregion

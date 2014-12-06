@@ -91,7 +91,7 @@ public class ABCScheduler implements IScheduler
 			//make scout and send them back
 			for (Bee bee : mBees)
 			{
-				if (bee.mCountOfMisses >= mAttemptsThreshold)
+				if (bee.getCountOfMisses() >= mAttemptsThreshold)
 				{
 					scout(bee);
 				}
