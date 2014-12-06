@@ -4,7 +4,14 @@ import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Output;
 import com.jraska.vsb.or1.io.SimpleTextParser;
 import com.jraska.vsb.or1.io.ToStringOutputWriter;
+import com.jraska.vsb.or1.schedule.IScheduler;
+import com.jraska.vsb.or1.schedule.RandomPositionGenerator;
 import com.jraska.vsb.or1.schedule.SimpleScheduler;
+import com.jraska.vsb.or1.schedule.Swap;
+import com.jraska.vsb.or1.schedule.abc.ABCScheduler;
+import com.jraska.vsb.or1.schedule.abc.Bee;
+import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
+import com.jraska.vsb.or1.schedule.abc.RouletteWheelSelection;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
 import java.io.File;
@@ -60,8 +67,13 @@ public final class Program
 		Input input = parser.parse(fileInputStream);
 		fileInputStream.close();
 
-		SimpleScheduler scheduler = new SimpleScheduler();
+		IScheduler scheduler = createScheduler(input);
 		Output output = scheduler.schedule(input);
+
+		SimpleScheduler referenceScheduler = new SimpleScheduler();
+		Output simple = referenceScheduler.schedule(input);
+
+		out.println("Simple Makespan: " + simple.getMakespan());
 
 		ToStringOutputWriter toStringOutputWriter = new ToStringOutputWriter();
 		toStringOutputWriter.write(output, System.out);
@@ -81,6 +93,23 @@ public final class Program
 				out.println(error);
 			}
 		}
+	}
+
+	protected IScheduler createScheduler(Input input)
+	{
+		MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
+		RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
+		RouletteWheelSelection wheelSelection = new RouletteWheelSelection();
+
+		Swap swap = new Swap();
+		Bee[] bees = new Bee[20];
+		for (int i = 0; i < 20; i++)
+		{
+			bees[i] = new Bee(swap, makespanCounter);
+		}
+
+		ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 10);
+		return abcScheduler;
 	}
 
 	//endregion
