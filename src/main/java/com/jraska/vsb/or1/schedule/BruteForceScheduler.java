@@ -57,12 +57,7 @@ public class BruteForceScheduler implements IScheduler
 			throw new IllegalStateException("Ensures something is there.");
 		}
 
-		Job[] startJobs = input.getJobs();
-		Job[] order = new Job[length];
-		for (int i = 0; i < length; i++)
-		{
-			order[i] = startJobs[bestSoFar[i]];
-		}
+		Job[] order = input.getWithOrder(bestSoFar);
 
 		List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(order);
 		return new Output(jobSchedules, input);

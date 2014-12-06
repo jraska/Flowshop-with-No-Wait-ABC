@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public final class RandomStartSolutionGenerator implements IStartSolutionGenerator
+public final class RandomPositionGenerator implements IPositionGenerator
 {
 	//region Fields
 
@@ -18,12 +18,12 @@ public final class RandomStartSolutionGenerator implements IStartSolutionGenerat
 	//region Constructors
 
 
-	public RandomStartSolutionGenerator(int length)
+	public RandomPositionGenerator(int length)
 	{
 		this(length, new Random());
 	}
 
-	public RandomStartSolutionGenerator(int length, Random random)
+	public RandomPositionGenerator(int length, Random random)
 	{
 		if (length < 1)
 		{

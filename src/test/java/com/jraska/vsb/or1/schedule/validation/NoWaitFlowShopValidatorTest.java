@@ -36,8 +36,7 @@ public class NoWaitFlowShopValidatorTest
 
 		Output output = new Output(schedules, input);
 
-		NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
-		List<String> validationResults = validator.validate(output);
+		List<String> validationResults = validate(output);
 
 		assertThat(validationResults.size(), equalTo(2)); //all starts at once so there will be conflict on both machines
 	}
@@ -45,15 +44,24 @@ public class NoWaitFlowShopValidatorTest
 	@Test
 	public void testValidSolution() throws Exception
 	{
-		Input input = SimpleTextParserTest.parseInput(SimpleSchedulerTest.LAB_INPUT);
+		Input input = SimpleSchedulerTest.newLabInput();
 
 		SimpleScheduler simpleScheduler = new SimpleScheduler();
 		Output schedule = simpleScheduler.schedule(input);
 
-		NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
-		List<String> validationResults = validator.validate(schedule);
+		List<String> validationResults = validate(schedule);
 
 		assertThat("There are no actual errors", validationResults.size(), equalTo(0));
+	}
+
+	//endregion
+
+	//region Methods
+
+	public static List<String> validate(Output output)
+	{
+		NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
+		return validator.validate(output);
 	}
 
 	//endregion

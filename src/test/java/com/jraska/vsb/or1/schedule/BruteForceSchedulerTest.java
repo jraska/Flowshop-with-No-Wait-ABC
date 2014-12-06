@@ -2,7 +2,6 @@ package com.jraska.vsb.or1.schedule;
 
 import com.jraska.vsb.or1.data.Input;
 import com.jraska.vsb.or1.data.Output;
-import com.jraska.vsb.or1.io.SimpleTextParserTest;
 import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class BruteForceSchedulerTest
 	@Test
 	public void testBestLabSolution() throws Exception
 	{
-		Input input = SimpleTextParserTest.parseInput(SimpleSchedulerTest.LAB_INPUT);
+		Input input = SimpleSchedulerTest.newLabInput();
 
 		BruteForceScheduler scheduler = new BruteForceScheduler(new MakespanCounter(input.getJobs()));
 		Output output = scheduler.schedule(input);

@@ -8,14 +8,14 @@ import java.util.Set;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class RandomStartSolutionGeneratorTest
+public class RandomPositionGeneratorTest
 {
 	//region Test Methods
 
 	@Test
 	public void testUniqueNumbers() throws Exception
 	{
-		RandomStartSolutionGenerator generator = new RandomStartSolutionGenerator(10);
+		RandomPositionGenerator generator = new RandomPositionGenerator(10);
 
 		for (int i = 0; i < 1000; i++)
 		{

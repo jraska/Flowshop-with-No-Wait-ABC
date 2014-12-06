@@ -28,7 +28,7 @@ public class SimpleSchedulerTest
 	@Test
 	public void testProducesValidSolution() throws Exception
 	{
-		Input input = SimpleTextParserTest.parseInput(LAB_INPUT);
+		Input input = SimpleSchedulerTest.newLabInput();
 
 		SimpleScheduler scheduler = new SimpleScheduler();
 		Output output = scheduler.schedule(input);
@@ -48,6 +48,15 @@ public class SimpleSchedulerTest
 		}
 
 		assertThat("TFT does not match", output.getTFT(), equalTo(142));
+	}
+
+	//endregion
+
+	//region Methods
+
+	public static Input newLabInput()
+	{
+		return SimpleTextParserTest.parseInput(LAB_INPUT);
 	}
 
 	//endregion

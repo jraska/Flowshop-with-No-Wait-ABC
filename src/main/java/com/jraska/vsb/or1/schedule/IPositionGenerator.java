@@ -1,6 +1,6 @@
 package com.jraska.vsb.or1.schedule;
 
-public interface IStartSolutionGenerator
+public interface IPositionGenerator
 {
 	int[] generate();
 }

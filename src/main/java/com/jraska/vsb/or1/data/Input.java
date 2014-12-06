@@ -52,13 +52,31 @@ public final class Input
 		return mJobs;
 	}
 
+	public int getMachinesCount()
+	{
+		return mMachinesCount;
+	}
+
+	public int getJobsCount()
+	{
+		return mJobs.length;
+	}
+
 	//endregion
 
 	//region Methods
 
-	public int getMachinesCount()
+	public Job[] getWithOrder(int[] order)
 	{
-		return mMachinesCount;
+		ArgumentCheck.notNull(order);
+
+		Job[] jobs = new Job[mJobs.length];
+		for (int i = 0; i < mJobs.length; i++)
+		{
+			jobs[i] = mJobs[order[i]];
+		}
+
+		return jobs;
 	}
 
 	//endregion
