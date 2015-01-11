@@ -1,4 +1,4 @@
-package com.jraska.vsb.or1.schedule.abc;
+package com.jraska.vsb.or1.schedule;
 
 public interface ILocalSearchStrategy {
   //region Methods

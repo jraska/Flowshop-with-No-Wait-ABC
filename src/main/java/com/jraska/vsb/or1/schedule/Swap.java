@@ -1,7 +1,6 @@
 package com.jraska.vsb.or1.schedule;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.vsb.or1.schedule.abc.ILocalSearchStrategy;
 
 import java.util.Arrays;
 import java.util.Random;

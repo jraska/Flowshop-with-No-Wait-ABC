@@ -1,6 +1,7 @@
 package com.jraska.vsb.or1.schedule.abc;
 
 import com.jraska.common.ArgumentCheck;
+import com.jraska.vsb.or1.schedule.ILocalSearchStrategy;
 import com.jraska.vsb.or1.schedule.IObjectiveFunction;
 import com.jraska.vsb.or1.schedule.IPositionGenerator;
 

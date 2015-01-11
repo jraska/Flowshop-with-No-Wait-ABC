@@ -1,9 +1,9 @@
 package com.jraska.vsb.or1;
 
+import com.jraska.vsb.or1.schedule.ILocalSearchStrategy;
 import com.jraska.vsb.or1.schedule.IObjectiveFunction;
 import com.jraska.vsb.or1.schedule.abc.Bee;
 import com.jraska.vsb.or1.schedule.abc.DebugBee;
-import com.jraska.vsb.or1.schedule.abc.ILocalSearchStrategy;
 
 public class DebugSchedule extends Program {
   //region Main method
