@@ -14,7 +14,7 @@ public class SwapTest {
 
   public static final int TEST_DIFFERENT_ARRAY_ITERATIONS = 10;
   public static final int TEST_ARRAY_SIZE = 100;
-  public static final int TEST_SWAP_ITERATIONS = 100;
+  public static final int TEST_ITERATIONS = 100;
 
   //endregion
 
@@ -33,7 +33,7 @@ public class SwapTest {
         arr[j] = random.nextInt();
       }
 
-      for (int j = 0; j < TEST_SWAP_ITERATIONS; j++) {
+      for (int j = 0; j < TEST_ITERATIONS; j++) {
         int[] newArr = swap.getNext(arr);
 
         assertThat(arr, not(equalTo(newArr)));
