@@ -25,7 +25,7 @@ public class SelfAdaptiveStrategyTest {
   }
 
   @Test
-  public void testFillsWiningList() throws Exception {
+  public void testFillsWinningList() throws Exception {
     SelfAdaptiveSearchStrategy strategy = new SelfAdaptiveSearchStrategy(new GettingBetterFunction());
 
     for (int i = 0, size = strategy.getSize(); i < size; i++) {
