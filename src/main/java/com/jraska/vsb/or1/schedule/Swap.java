@@ -10,7 +10,7 @@ public class Swap implements ILocalSearchStrategy
 {
 	//region Fields
 
-	private final Random mRandom;
+  private final Random _random;
 
 	//endregion
 
@@ -25,7 +25,7 @@ public class Swap implements ILocalSearchStrategy
 	{
 		ArgumentCheck.notNull(random);
 
-		mRandom = random;
+	  _random = random;
 	}
 
 	//endregion
@@ -39,10 +39,10 @@ public class Swap implements ILocalSearchStrategy
 
 		int[] copyOf = Arrays.copyOf(currentSolution, currentSolution.length);
 
-		int firstIndex = mRandom.nextInt(length);
+	  int firstIndex = _random.nextInt(length);
 
 		//uniformly select from remaining indexes
-		int secondIndex = mRandom.nextInt(length - 1);
+	  int secondIndex = _random.nextInt(length - 1);
 		if (secondIndex >= firstIndex)
 		{
 			secondIndex++;

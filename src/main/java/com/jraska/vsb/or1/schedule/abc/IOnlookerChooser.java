@@ -1,10 +1,9 @@
 package com.jraska.vsb.or1.schedule.abc;
 
-public interface IOnlookerChooser
-{
-	//region Methods
+public interface IOnlookerChooser {
+  //region Methods
 
-	Bee selectBee(Bee[] bees, double fitnessSum);
+  Bee selectBee(Bee[] bees, double fitnessSum);
 
-	//endregion
+  //endregion
 }

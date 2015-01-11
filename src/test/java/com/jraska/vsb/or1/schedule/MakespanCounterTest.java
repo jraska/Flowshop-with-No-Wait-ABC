@@ -7,23 +7,20 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class MakespanCounterTest
-{
-	//region Test methods
+public class MakespanCounterTest {
+  //region Test methods
 
-	@Test
-	public void testLabMakespan() throws Exception
-	{
-		Input input = SimpleSchedulerTest.newLabInput();
+  @Test
+  public void testLabMakespan() throws Exception {
+    Input input = SimpleSchedulerTest.newLabInput();
 
-		MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
-		int[] solution = {0, 1, 2, 3, 4};
+    MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
+    int[] solution = {0, 1, 2, 3, 4};
 
-		int makespan = makespanCounter.evaluate(solution);
+    int makespan = makespanCounter.evaluate(solution);
 
-		assertThat("Bad makespan counted", makespan, equalTo(40));
-	}
+    assertThat("Bad makespan counted", makespan, equalTo(40));
+  }
 
-
-	//endregion
+  //endregion
 }

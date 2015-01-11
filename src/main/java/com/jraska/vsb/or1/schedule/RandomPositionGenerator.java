@@ -10,8 +10,8 @@ public final class RandomPositionGenerator implements IPositionGenerator
 {
 	//region Fields
 
-	private final int mLength;
-	private final Random mRandom;
+  private final int _mLength;
+  private final Random _random;
 
 	//endregion
 
@@ -32,8 +32,8 @@ public final class RandomPositionGenerator implements IPositionGenerator
 
 		ArgumentCheck.notNull(random);
 
-		mLength = length;
-		mRandom = random;
+	  _mLength = length;
+	  _random = random;
 	}
 
 	//endregion
@@ -43,7 +43,7 @@ public final class RandomPositionGenerator implements IPositionGenerator
 	@Override
 	public int[] generate()
 	{
-		int length = mLength;
+	  int length = _mLength;
 
 		List<Integer> integers = new ArrayList<Integer>(length);
 		for (int i = 0; i < length; i++)
@@ -56,7 +56,7 @@ public final class RandomPositionGenerator implements IPositionGenerator
 		for (int i = 0; i < length; i++)
 		{
 			int size = integers.size();
-			int position = mRandom.nextInt(size);
+		  int position = _random.nextInt(size);
 
 			int index = integers.get(position);
 

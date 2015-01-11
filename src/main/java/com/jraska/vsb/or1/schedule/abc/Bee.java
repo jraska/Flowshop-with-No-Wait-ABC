@@ -7,103 +7,90 @@ import com.jraska.vsb.or1.schedule.IPositionGenerator;
 /**
  * Bzz...
  */
-public class Bee
-{
-	//region Fields
+public class Bee {
+  //region Fields
 
-	int[] mPosition;
-	int mPositionValue;
-	private double mFitnessValue;
+  int[] _position;
+  int _positionValue;
+  private double _fitnessValue;
 
-	private int mCountOfMisses;
+  private int _countOfMisses;
 
-	private final ILocalSearchStrategy mLocalSearchStrategy;
-	private final IObjectiveFunction mObjectiveFunction;
+  private final ILocalSearchStrategy _localSearchStrategy;
+  private final IObjectiveFunction _objectiveFunction;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public Bee(ILocalSearchStrategy localSearchStrategy, IObjectiveFunction objectiveFunction)
-	{
-		ArgumentCheck.notNull(localSearchStrategy);
-		ArgumentCheck.notNull(objectiveFunction);
+  public Bee(ILocalSearchStrategy localSearchStrategy, IObjectiveFunction objectiveFunction) {
+    ArgumentCheck.notNull(localSearchStrategy);
+    ArgumentCheck.notNull(objectiveFunction);
 
-		mLocalSearchStrategy = localSearchStrategy;
-		mObjectiveFunction = objectiveFunction;
-	}
+    _localSearchStrategy = localSearchStrategy;
+    _objectiveFunction = objectiveFunction;
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public int[] getPosition()
-	{
-		return mPosition;
-	}
+  public int[] getPosition() {
+    return _position;
+  }
 
-	public int getPositionValue()
-	{
-		return mPositionValue;
-	}
+  public int getPositionValue() {
+    return _positionValue;
+  }
 
-	public int getCountOfMisses()
-	{
-		return mCountOfMisses;
-	}
+  public int getCountOfMisses() {
+    return _countOfMisses;
+  }
 
-	public double getFitnessValue()
-	{
-		return mFitnessValue;
-	}
+  public double getFitnessValue() {
+    return _fitnessValue;
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public int sendScouting(IPositionGenerator generator)
-	{
-		mPosition = generator.generate();
-		mPositionValue = mObjectiveFunction.evaluate(mPosition);
+  public int sendScouting(IPositionGenerator generator) {
+    _position = generator.generate();
+    _positionValue = _objectiveFunction.evaluate(_position);
 
-		onNewFound();
+    onNewFound();
 
-		return mPositionValue;
-	}
+    return _positionValue;
+  }
 
-	public boolean searchForNewPosition()
-	{
-		int[] next = mLocalSearchStrategy.getNext(mPosition);
+  public boolean searchForNewPosition() {
+    int[] next = _localSearchStrategy.getNext(_position);
 
-		int value = mObjectiveFunction.evaluate(next);
-		if (value < mPositionValue)
-		{
-			mPositionValue = value;
-			mPosition = next;
+    int value = _objectiveFunction.evaluate(next);
+    if (value < _positionValue) {
+      _positionValue = value;
+      _position = next;
 
-			onBetterFound();
+      onBetterFound();
 
-			return true;
-		}
-		else
-		{
-			mCountOfMisses++;
+      return true;
+    } else {
+      _countOfMisses++;
 
-			return false;
-		}
-	}
+      return false;
+    }
+  }
 
-	protected void onBetterFound()
-	{
-		onNewFound();
-	}
+  protected void onBetterFound() {
+    onNewFound();
+  }
 
-	private void onNewFound()
-	{
-		mCountOfMisses = 0;
+  private void onNewFound() {
+    _countOfMisses = 0;
 
-		mFitnessValue = 1.0 / (1 + mPositionValue);
-	}
+    _fitnessValue = 1.0 / (1 + _positionValue);
+  }
 
-	//endregion
+  //endregion
 }

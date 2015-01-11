@@ -1,88 +1,82 @@
 package com.jraska.vsb.or1.data;
 
-public final class Interval
-{
-	//region Fields
+public final class Interval {
+  //region Fields
 
-	private final int mStart;
-	private final int mEnd;
+  private final int _start;
+  private final int _end;
 
-	private final int mLength;
+  private final int _length;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public Interval(int start, int end)
-	{
-		if (end < start)
-		{
-			String message = "Cannot create interval <%d, %d>. Start is higher than end.";
-			throw new IllegalArgumentException(String.format(message, start, end));
-		}
+  public Interval(int start, int end) {
+    if (end < start) {
+      String message = "Cannot create interval <%d, %d>. Start is higher than end.";
+      throw new IllegalArgumentException(String.format(message, start, end));
+    }
 
-		mStart = start;
-		mEnd = end;
+    _start = start;
+    _end = end;
 
-		mLength = end - start;
-	}
+    _length = end - start;
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public int getStart()
-	{
-		return mStart;
-	}
+  public int getStart() {
+    return _start;
+  }
 
-	public int getEnd()
-	{
-		return mEnd;
-	}
+  public int getEnd() {
+    return _end;
+  }
 
-	public int getLength()
-	{
-		return mLength;
-	}
+  public int getLength() {
+    return _length;
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public boolean intersects(Interval other)
-	{
-		return mStart < other.mEnd && mEnd > other.mStart;
-	}
+  public boolean intersects(Interval other) {
+    return _start < other._end && _end > other._start;
+  }
 
-	//endregion
+  //endregion
 
-	//region Object impl
+  //region Object impl
 
-	@Override
-	public String toString()
-	{
-		return "<" + mStart + "; " + mEnd + ">";
-	}
+  @Override
+  public String toString() {
+    return "<" + _start + "; " + _end + ">";
+  }
 
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
-		Interval interval = (Interval) o;
+    Interval interval = (Interval) o;
 
-		return mEnd == interval.mEnd && mStart == interval.mStart;
-	}
+    return _end == interval._end && _start == interval._start;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		int result = mStart;
-		result = 31 * result + mEnd;
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    int result = _start;
+    result = 31 * result + _end;
+    return result;
+  }
 
-	//endregion
+  //endregion
 }

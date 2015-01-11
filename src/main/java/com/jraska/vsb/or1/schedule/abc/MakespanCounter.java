@@ -6,61 +6,55 @@ import com.jraska.vsb.or1.schedule.IObjectiveFunction;
 
 import java.util.Arrays;
 
-public final class MakespanCounter implements IObjectiveFunction
-{
-	//region Fields
+public final class MakespanCounter implements IObjectiveFunction {
+  //region Fields
 
-	private final int mJobsLength;
-	private final Job[] mJobs;
+  private final int mJobsLength;
+  private final Job[] mJobs;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public MakespanCounter(Job[] jobs)
-	{
-		ArgumentCheck.notNull(jobs);
+  public MakespanCounter(Job[] jobs) {
+    ArgumentCheck.notNull(jobs);
 
-		mJobsLength = jobs.length;
-		mJobs = Arrays.copyOf(jobs, mJobsLength);
-	}
+    mJobsLength = jobs.length;
+    mJobs = Arrays.copyOf(jobs, mJobsLength);
+  }
 
-	//endregion
+  //endregion
 
-	//region IObjectiveFunction impl
+  //region IObjectiveFunction impl
 
-	@Override
-	public int evaluate(int[] solution)
-	{
-		return countMakespan(solution);
-	}
+  @Override
+  public int evaluate(int[] solution) {
+    return countMakespan(solution);
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public int countMakespan(int[] solution)
-	{
-		if (solution.length != mJobsLength)
-		{
-			String message = "Solution length %d and Jobs length %d does not match";
-			throw new IllegalArgumentException(String.format(message, solution.length, mJobsLength));
-		}
+  public int countMakespan(int[] solution) {
+    if (solution.length != mJobsLength) {
+      String message = "Solution length %d and Jobs length %d does not match";
+      throw new IllegalArgumentException(String.format(message, solution.length, mJobsLength));
+    }
 
-		int delaySum = 0;
+    int delaySum = 0;
 
-		for (int i = 1; i < mJobsLength; i++)
-		{
-			Job previous = mJobs[solution[i - 1]];
-			Job next = mJobs[solution[i]];
+    for (int i = 1; i < mJobsLength; i++) {
+      Job previous = mJobs[solution[i - 1]];
+      Job next = mJobs[solution[i]];
 
-			delaySum += previous.getDepartureDelay(next);
-		}
+      delaySum += previous.getDepartureDelay(next);
+    }
 
-		int lastJobDuration = mJobs[solution[mJobsLength - 1]].getTotalDuration();
+    int lastJobDuration = mJobs[solution[mJobsLength - 1]].getTotalDuration();
 
-		return delaySum + lastJobDuration;
-	}
+    return delaySum + lastJobDuration;
+  }
 
-	//endregion
+  //endregion
 }

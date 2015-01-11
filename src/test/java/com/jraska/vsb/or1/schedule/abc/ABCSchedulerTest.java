@@ -8,33 +8,30 @@ import com.jraska.vsb.or1.schedule.Swap;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidatorTest;
 import org.junit.Test;
 
-public class ABCSchedulerTest
-{
-	//region Test Methods
+public class ABCSchedulerTest {
+  //region Test Methods
 
-	@Test
-	public void testSingleRun() throws Exception
-	{
-		Input input = SimpleSchedulerTest.newLabInput();
+  @Test
+  public void testSingleRun() throws Exception {
+    Input input = SimpleSchedulerTest.newLabInput();
 
-		MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
-		RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
-		RouletteWheelSelection wheelSelection = new RouletteWheelSelection();
+    MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
+    RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
+    RouletteWheelSelection wheelSelection = new RouletteWheelSelection();
 
-		Swap swap = new Swap();
-		Bee[] bees = new Bee[20];
-		for (int i = 0; i < 20; i++)
-		{
-			bees[i] = new Bee(swap, makespanCounter);
-		}
+    Swap swap = new Swap();
+    Bee[] bees = new Bee[20];
+    for (int i = 0; i < 20; i++) {
+      bees[i] = new Bee(swap, makespanCounter);
+    }
 
-		ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 5);
-		Output schedule = abcScheduler.schedule(input);
+    ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 5);
+    Output schedule = abcScheduler.schedule(input);
 
-		NoWaitFlowShopValidatorTest.validate(schedule);
+    NoWaitFlowShopValidatorTest.validate(schedule);
 
-		System.out.println(schedule);
-	}
+    System.out.println(schedule);
+  }
 
-	//endregion
+  //endregion
 }

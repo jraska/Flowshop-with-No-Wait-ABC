@@ -14,118 +14,103 @@ import java.util.List;
 /**
  * Scheduler using pure Artificial Bee Colony algorithm to find best vector of job order
  */
-public class ABCScheduler implements IScheduler
-{
-	//region Fields
+public class ABCScheduler implements IScheduler {
+  //region Fields
 
-	private final Bee[] mBees;
-	private final int mAttemptsThreshold;
-	private final IPositionGenerator mPositionGenerator;
-	private final int mOnlookersCount;
-	private final IOnlookerChooser mOnlookerChooser;
+  private final Bee[] _bees;
+  private final int _attemptsThreshold;
+  private final IPositionGenerator _positionGenerator;
+  private final int _onlookersCount;
+  private final IOnlookerChooser _onlookerChooser;
 
 
-	private int[] mBestSolution;
-	private int mBestValue;
+  private int[] _bestSolution;
+  private int _bestValue;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public ABCScheduler(Bee[] bees, IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold)
-	{
-		ArgumentCheck.notNull(bees);
-		ArgumentCheck.notNull(generator);
-		ArgumentCheck.notNull(onlookerChooser);
+  public ABCScheduler(Bee[] bees, IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold) {
+    ArgumentCheck.notNull(bees);
+    ArgumentCheck.notNull(generator);
+    ArgumentCheck.notNull(onlookerChooser);
 
-		if (attemptsThreshold < 1)
-		{
-			throw new IllegalArgumentException("Attempts threshold must be positive");
-		}
+    if (attemptsThreshold < 1) {
+      throw new IllegalArgumentException("Attempts threshold must be positive");
+    }
 
-		mBees = Arrays.copyOf(bees, bees.length);
-		mPositionGenerator = generator;
-		mOnlookerChooser = onlookerChooser;
-		mAttemptsThreshold = attemptsThreshold;
+    _bees = Arrays.copyOf(bees, bees.length);
+    _positionGenerator = generator;
+    _onlookerChooser = onlookerChooser;
+    _attemptsThreshold = attemptsThreshold;
 
-		//same size of onlookers as bees
-		mOnlookersCount = bees.length;
-	}
+    //same size of onlookers as bees
+    _onlookersCount = bees.length;
+  }
 
-	//endregion
+  //endregion
 
-	//region IScheduler impl
+  //region IScheduler impl
 
-	@Override
-	public Output schedule(Input input)
-	{
-		ArgumentCheck.notNull(input, "input");
+  @Override
+  public Output schedule(Input input) {
+    ArgumentCheck.notNull(input, "input");
 
-		mBestSolution = null;
-		mBestValue = Integer.MAX_VALUE;
+    _bestSolution = null;
+    _bestValue = Integer.MAX_VALUE;
 
-		//setup Bees
-		for (Bee bee : mBees)
-		{
-			scout(bee);
-		}
+    //setup Bees
+    for (Bee bee : _bees) {
+      scout(bee);
+    }
 
-		for (int i = 0; i < 1000; i++)
-		{
-			//search near bees
-			double fitnessSum = 0;
-			for (Bee bee : mBees)
-			{
-				localSearch(bee);
+    for (int i = 0; i < 1000; i++) {
+      //search near bees
+      double fitnessSum = 0;
+      for (Bee bee : _bees) {
+        localSearch(bee);
 
-				fitnessSum += bee.getFitnessValue();
-			}
+        fitnessSum += bee.getFitnessValue();
+      }
 
-			//send onlookers
-			for (int j = 0; j < mOnlookersCount; j++)
-			{
-				Bee bee = mOnlookerChooser.selectBee(mBees, fitnessSum);
-				localSearch(bee);
-			}
+      //send onlookers
+      for (int j = 0; j < _onlookersCount; j++) {
+        Bee bee = _onlookerChooser.selectBee(_bees, fitnessSum);
+        localSearch(bee);
+      }
 
-			//make scout and send them back
-			for (Bee bee : mBees)
-			{
-				if (bee.getCountOfMisses() >= mAttemptsThreshold)
-				{
-					scout(bee);
-				}
-			}
-		}
+      //make scout and send them back
+      for (Bee bee : _bees) {
+        if (bee.getCountOfMisses() >= _attemptsThreshold) {
+          scout(bee);
+        }
+      }
+    }
 
-		Job[] bestSequence = input.getWithOrder(mBestSolution);
-		List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(bestSequence);
+    Job[] bestSequence = input.getWithOrder(_bestSolution);
+    List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(bestSequence);
 
-		return new Output(jobSchedules, input);
-	}
+    return new Output(jobSchedules, input);
+  }
 
-	protected void localSearch(Bee bee)
-	{
-		boolean foundBetter = bee.searchForNewPosition();
-		if (foundBetter)
-		{
-			if (bee.mPositionValue < mBestValue)
-			{
-				mBestValue = bee.mPositionValue;
-				mBestSolution = bee.mPosition;
-			}
-		}
-	}
+  protected void localSearch(Bee bee) {
+    boolean foundBetter = bee.searchForNewPosition();
+    if (foundBetter) {
+      if (bee._positionValue < _bestValue) {
+        _bestValue = bee._positionValue;
+        _bestSolution = bee._position;
+      }
+    }
+  }
 
-	protected void scout(Bee bee)
-	{
-		int value = bee.sendScouting(mPositionGenerator);
-		if (value < mBestValue)
-		{
-			mBestSolution = bee.getPosition();
-			mBestValue = value;
-		}
-	}
+  protected void scout(Bee bee) {
+    int value = bee.sendScouting(_positionGenerator);
+    if (value < _bestValue) {
+      _bestSolution = bee.getPosition();
+      _bestValue = value;
+    }
+  }
 
-	//endregion
+  //endregion
 }

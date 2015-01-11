@@ -4,103 +4,89 @@ import com.jraska.common.ArgumentCheck;
 
 import java.util.Arrays;
 
-public final class Input
-{
-	//region Fields
+public final class Input {
+  //region Fields
 
-	private final int mMachinesCount;
-	private final Job[] mJobs;
+  private final int _machinesCount;
+  private final Job[] _jobs;
 
-	//TODO: remove mutable field
-	private String mName;
+  //TODO: remove mutable field
+  private String _name;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
 
-	public Input(int machinesCount, Job[] jobs)
-	{
-		if (machinesCount < 1)
-		{
-			throw new IllegalArgumentException("There must be at least one machine");
-		}
+  public Input(int machinesCount, Job[] jobs) {
+    if (machinesCount < 1) {
+      throw new IllegalArgumentException("There must be at least one machine");
+    }
 
-		ArgumentCheck.notNull(jobs, "jobs");
+    ArgumentCheck.notNull(jobs, "jobs");
 
-		validateJobsSize(machinesCount, jobs);
+    validateJobsSize(machinesCount, jobs);
 
-		mMachinesCount = machinesCount;
-		mJobs = Arrays.copyOf(jobs, jobs.length);
-	}
+    _machinesCount = machinesCount;
+    _jobs = Arrays.copyOf(jobs, jobs.length);
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public String getName()
-	{
-		return mName;
-	}
+  public String getName() {
+    return _name;
+  }
 
-	public void setName(String name)
-	{
-		mName = name;
-	}
+  public void setName(String name) {
+    _name = name;
+  }
 
-	public static void validateJobsSize(int machineSize, Job[] jobs)
-	{
-		for (Job job : jobs)
-		{
-			if (job.getDurationsCount() != machineSize)
-			{
-				String messageBase = "Job %s does not have correct number of durations for %d machines";
-				throw new IllegalArgumentException(String.format(messageBase, job, machineSize));
-			}
-		}
-	}
+  public static void validateJobsSize(int machineSize, Job[] jobs) {
+    for (Job job : jobs) {
+      if (job.getDurationsCount() != machineSize) {
+        String messageBase = "Job %s does not have correct number of durations for %d machines";
+        throw new IllegalArgumentException(String.format(messageBase, job, machineSize));
+      }
+    }
+  }
 
-	public Job[] getJobs()
-	{
-		return mJobs;
-	}
+  public Job[] getJobs() {
+    return _jobs;
+  }
 
-	public int getMachinesCount()
-	{
-		return mMachinesCount;
-	}
+  public int getMachinesCount() {
+    return _machinesCount;
+  }
 
-	public int getJobsCount()
-	{
-		return mJobs.length;
-	}
+  public int getJobsCount() {
+    return _jobs.length;
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public Job[] getWithOrder(int[] order)
-	{
-		ArgumentCheck.notNull(order);
+  public Job[] getWithOrder(int[] order) {
+    ArgumentCheck.notNull(order);
 
-		Job[] jobs = new Job[mJobs.length];
-		for (int i = 0; i < mJobs.length; i++)
-		{
-			jobs[i] = mJobs[order[i]];
-		}
+    Job[] jobs = new Job[_jobs.length];
+    for (int i = 0; i < _jobs.length; i++) {
+      jobs[i] = _jobs[order[i]];
+    }
 
-		return jobs;
-	}
+    return jobs;
+  }
 
-	//endregion
+  //endregion
 
-	//region Object impl
+  //region Object impl
 
-	@Override
-	public String toString()
-	{
-		return "MachinesCount=" + mMachinesCount + ", Jobs" + Arrays.toString(mJobs);
-	}
+  @Override
+  public String toString() {
+    return "MachinesCount=" + _machinesCount + ", Jobs" + Arrays.toString(_jobs);
+  }
 
-	//endregion
+  //endregion
 }

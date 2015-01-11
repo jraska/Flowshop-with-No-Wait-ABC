@@ -7,41 +7,36 @@ import com.jraska.vsb.or1.data.Job;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public final class SimpleTextParser implements IInputParser
-{
-	//region IInputParser impl
+public final class SimpleTextParser implements IInputParser {
+  //region IInputParser impl
 
-	@Override
-	public Input parse(InputStream inputStream)
-	{
-		ArgumentCheck.notNull(inputStream);
+  @Override
+  public Input parse(InputStream inputStream) {
+    ArgumentCheck.notNull(inputStream);
 
-		Scanner scanner = new Scanner(inputStream);
+    Scanner scanner = new Scanner(inputStream);
 
-		int machinesCount = scanner.nextInt();
-		int jobsCount = scanner.nextInt();
+    int machinesCount = scanner.nextInt();
+    int jobsCount = scanner.nextInt();
 
-		int[][] data = new int[jobsCount][machinesCount];
+    int[][] data = new int[jobsCount][machinesCount];
 
-		for (int i = 0; i < machinesCount; i++)
-		{
-			for (int j = 0; j < jobsCount; j++)
-			{
-				//save in index reverse order to have job columns in lines
-				data[j][i] = scanner.nextInt();
-			}
-		}
+    for (int i = 0; i < machinesCount; i++) {
+      for (int j = 0; j < jobsCount; j++) {
+        //save in index reverse order to have job columns in lines
+        data[j][i] = scanner.nextInt();
+      }
+    }
 
-		Job[] jobs = new Job[jobsCount];
-		for (int i = 0; i < jobsCount; i++)
-		{
-			String name = String.valueOf(i + 1);
-			Job job = new Job(name, data[i]); //job data are stored in line
-			jobs[i] = job;
-		}
+    Job[] jobs = new Job[jobsCount];
+    for (int i = 0; i < jobsCount; i++) {
+      String name = String.valueOf(i + 1);
+      Job job = new Job(name, data[i]); //job data are stored in line
+      jobs[i] = job;
+    }
 
-		return new Input(machinesCount, jobs);
-	}
+    return new Input(machinesCount, jobs);
+  }
 
-	//endregion
+  //endregion
 }

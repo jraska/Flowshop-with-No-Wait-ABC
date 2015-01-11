@@ -11,23 +11,21 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class BruteForceSchedulerTest
-{
-	//region Test Methods
+public class BruteForceSchedulerTest {
+  //region Test Methods
 
-	@Test
-	public void testBestLabSolution() throws Exception
-	{
-		Input input = SimpleSchedulerTest.newLabInput();
+  @Test
+  public void testBestLabSolution() throws Exception {
+    Input input = SimpleSchedulerTest.newLabInput();
 
-		BruteForceScheduler scheduler = new BruteForceScheduler(new MakespanCounter(input.getJobs()));
-		Output output = scheduler.schedule(input);
+    BruteForceScheduler scheduler = new BruteForceScheduler(new MakespanCounter(input.getJobs()));
+    Output output = scheduler.schedule(input);
 
-		List<String> validate = new NoWaitFlowShopValidator().validate(output);
-		assertThat("Solution is not valid", validate.size(), equalTo(0));
+    List<String> validate = new NoWaitFlowShopValidator().validate(output);
+    assertThat("Solution is not valid", validate.size(), equalTo(0));
 
-		assertThat(output.getMakespan(), equalTo(32));
-	}
+    assertThat(output.getMakespan(), equalTo(32));
+  }
 
-	//endregion
+  //endregion
 }

@@ -4,11 +4,10 @@ import com.jraska.vsb.or1.data.Input;
 
 import java.io.InputStream;
 
-public interface IInputParser
-{
-	//region Methods
+public interface IInputParser {
+  //region Methods
 
-	Input parse(InputStream inputStream);
+  Input parse(InputStream inputStream);
 
-	//endregion
+  //endregion
 }

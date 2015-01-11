@@ -4,50 +4,44 @@ import com.jraska.common.ArgumentCheck;
 
 import java.util.Random;
 
-public class RouletteWheelSelection implements IOnlookerChooser
-{
-	//region Fields
+public class RouletteWheelSelection implements IOnlookerChooser {
+  //region Fields
 
-	private final Random mRandom;
+  private final Random mRandom;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
 
-	public RouletteWheelSelection()
-	{
-		this(new Random());
-	}
+  public RouletteWheelSelection() {
+    this(new Random());
+  }
 
-	public RouletteWheelSelection(Random random)
-	{
-		ArgumentCheck.notNull(random);
+  public RouletteWheelSelection(Random random) {
+    ArgumentCheck.notNull(random);
 
-		mRandom = random;
-	}
+    mRandom = random;
+  }
 
-	//endregion
+  //endregion
 
-	//region IOnlookerChooser impl
+  //region IOnlookerChooser impl
 
-	@Override
-	public Bee selectBee(Bee[] bees, double fitnessSum)
-	{
-		double value = fitnessSum * mRandom.nextDouble();
+  @Override
+  public Bee selectBee(Bee[] bees, double fitnessSum) {
+    double value = fitnessSum * mRandom.nextDouble();
 
-		double sum = 0;
-		for (Bee bee : bees)
-		{
-			sum += bee.getFitnessValue();
-			if (sum >= value)
-			{
-				return bee;
-			}
-		}
+    double sum = 0;
+    for (Bee bee : bees) {
+      sum += bee.getFitnessValue();
+      if (sum >= value) {
+        return bee;
+      }
+    }
 
-		throw new IllegalStateException("Should not come here.");
-	}
+    throw new IllegalStateException("Should not come here.");
+  }
 
-	//endregion
+  //endregion
 }

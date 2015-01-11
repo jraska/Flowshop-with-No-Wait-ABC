@@ -9,96 +9,83 @@ import com.jraska.vsb.or1.data.Output;
 import java.util.List;
 
 
-public class BruteForceScheduler implements IScheduler
-{
-	//region Fields
+public class BruteForceScheduler implements IScheduler {
+  //region Fields
 
-	private final IObjectiveFunction mObjectiveFunction;
+  private final IObjectiveFunction _objectiveFunction;
 
-	private int[] mBestSoFar;
-	private int mMinSoFar;
+  private int[] _bestSoFar;
+  private int _minSoFar;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public BruteForceScheduler(IObjectiveFunction objectiveFunction)
-	{
-		ArgumentCheck.notNull(objectiveFunction);
+  public BruteForceScheduler(IObjectiveFunction objectiveFunction) {
+    ArgumentCheck.notNull(objectiveFunction);
 
-		mObjectiveFunction = objectiveFunction;
-	}
+    _objectiveFunction = objectiveFunction;
+  }
 
-	//endregion
+  //endregion
 
-	//region IScheduler impl
+  //region IScheduler impl
 
-	@Override
-	public Output schedule(Input input)
-	{
-		ArgumentCheck.notNull(input);
+  @Override
+  public Output schedule(Input input) {
+    ArgumentCheck.notNull(input);
 
-		mBestSoFar = null;
-		mMinSoFar = Integer.MAX_VALUE;
+    _bestSoFar = null;
+    _minSoFar = Integer.MAX_VALUE;
 
-		final int length = input.getJobs().length;
+    final int length = input.getJobs().length;
 
-		permutations(length);
+    permutations(length);
 
-		if (mBestSoFar == null)
-		{
-			throw new IllegalStateException("Ensures something is there.");
-		}
+    if (_bestSoFar == null) {
+      throw new IllegalStateException("Ensures something is there.");
+    }
 
-		Job[] order = input.getWithOrder(mBestSoFar);
+    Job[] order = input.getWithOrder(_bestSoFar);
 
-		List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(order);
-		return new Output(jobSchedules, input);
-	}
+    List<JobSchedule> jobSchedules = JobSchedule.createJobSchedules(order);
+    return new Output(jobSchedules, input);
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	private void permutations(int n)
-	{
-		int[] a = new int[n];
-		for (int i = 0; i < n; i++)
-		{
-			a[i] = i;
-		}
+  private void permutations(int n) {
+    int[] a = new int[n];
+    for (int i = 0; i < n; i++) {
+      a[i] = i;
+    }
 
-		permutation(a, 0);
-	}
+    permutation(a, 0);
+  }
 
-	private void permutation(int[] arr, int pos)
-	{
-		if (arr.length - pos == 1)
-		{
-			int value = mObjectiveFunction.evaluate(arr);
-			if (value < mMinSoFar)
-			{
-				mMinSoFar = value;
-				mBestSoFar = arr.clone();
-			}
-		}
-		else
-		{
-			for (int i = pos; i < arr.length; i++)
-			{
-				swap(arr, pos, i);
-				permutation(arr, pos + 1);
-				swap(arr, pos, i);
-			}
-		}
-	}
+  private void permutation(int[] arr, int pos) {
+    if (arr.length - pos == 1) {
+      int value = _objectiveFunction.evaluate(arr);
+      if (value < _minSoFar) {
+        _minSoFar = value;
+        _bestSoFar = arr.clone();
+      }
+    } else {
+      for (int i = pos; i < arr.length; i++) {
+        swap(arr, pos, i);
+        permutation(arr, pos + 1);
+        swap(arr, pos, i);
+      }
+    }
+  }
 
-	public static void swap(int[] arr, int pos1, int pos2)
-	{
-		int h = arr[pos1];
-		arr[pos1] = arr[pos2];
-		arr[pos2] = h;
-	}
+  public static void swap(int[] arr, int pos1, int pos2) {
+    int h = arr[pos1];
+    arr[pos1] = arr[pos2];
+    arr[pos2] = h;
+  }
 
-	//endregion
+  //endregion
 }

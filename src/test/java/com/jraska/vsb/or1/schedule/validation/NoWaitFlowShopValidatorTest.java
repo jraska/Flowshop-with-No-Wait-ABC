@@ -15,54 +15,49 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class NoWaitFlowShopValidatorTest
-{
-	//region Test Methods
+public class NoWaitFlowShopValidatorTest {
+  //region Test Methods
 
-	@Test
-	public void testFindConflict() throws Exception
-	{
-		String inputText = "2 2\n" +
-				"3 2\n" +
-				"2 3";
+  @Test
+  public void testFindConflict() throws Exception {
+    String inputText = "2 2\n" +
+            "3 2\n" +
+            "2 3";
 
-		Input input = SimpleTextParserTest.parseInput(inputText);
+    Input input = SimpleTextParserTest.parseInput(inputText);
 
-		List<JobSchedule> schedules = new ArrayList<JobSchedule>();
-		for (Job job : input.getJobs())
-		{
-			schedules.add(new JobSchedule(job, 1));//all starts at once
-		}
+    List<JobSchedule> schedules = new ArrayList<JobSchedule>();
+    for (Job job : input.getJobs()) {
+      schedules.add(new JobSchedule(job, 1));//all starts at once
+    }
 
-		Output output = new Output(schedules, input);
+    Output output = new Output(schedules, input);
 
-		List<String> validationResults = validate(output);
+    List<String> validationResults = validate(output);
 
-		assertThat(validationResults.size(), equalTo(2)); //all starts at once so there will be conflict on both machines
-	}
+    assertThat(validationResults.size(), equalTo(2)); //all starts at once so there will be conflict on both machines
+  }
 
-	@Test
-	public void testValidSolution() throws Exception
-	{
-		Input input = SimpleSchedulerTest.newLabInput();
+  @Test
+  public void testValidSolution() throws Exception {
+    Input input = SimpleSchedulerTest.newLabInput();
 
-		SimpleScheduler simpleScheduler = new SimpleScheduler();
-		Output schedule = simpleScheduler.schedule(input);
+    SimpleScheduler simpleScheduler = new SimpleScheduler();
+    Output schedule = simpleScheduler.schedule(input);
 
-		List<String> validationResults = validate(schedule);
+    List<String> validationResults = validate(schedule);
 
-		assertThat("There are no actual errors", validationResults.size(), equalTo(0));
-	}
+    assertThat("There are no actual errors", validationResults.size(), equalTo(0));
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public static List<String> validate(Output output)
-	{
-		NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
-		return validator.validate(output);
-	}
+  public static List<String> validate(Output output) {
+    NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
+    return validator.validate(output);
+  }
 
-	//endregion
+  //endregion
 }
