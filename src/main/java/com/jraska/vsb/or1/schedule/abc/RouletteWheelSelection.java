@@ -4,7 +4,7 @@ import com.jraska.common.ArgumentCheck;
 
 import java.util.Random;
 
-public class RouletteWheelSelection implements IOnlookerChooser {
+public final class RouletteWheelSelection implements IOnlookerChooser {
   //region Fields
 
   private final Random mRandom;

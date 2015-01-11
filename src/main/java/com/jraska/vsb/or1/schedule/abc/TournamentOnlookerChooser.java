@@ -2,7 +2,7 @@ package com.jraska.vsb.or1.schedule.abc;
 
 import com.jraska.common.ArgumentCheck;
 
-public class TournamentOnlookerChooser implements IOnlookerChooser {
+public final class TournamentOnlookerChooser implements IOnlookerChooser {
   //region Fields
 
   private final RouletteWheelSelection _wheelSelection;
@@ -25,10 +25,6 @@ public class TournamentOnlookerChooser implements IOnlookerChooser {
   public Bee selectBee(Bee[] bees, double fitnessSum) {
     Bee firstBee = _wheelSelection.selectBee(bees, fitnessSum);
     Bee secondBee = _wheelSelection.selectBee(bees, fitnessSum);
-
-    if (firstBee == secondBee) {
-      return firstBee;
-    }
 
     //pick the better one
     if (firstBee.getPositionValue() < secondBee.getPositionValue()) {

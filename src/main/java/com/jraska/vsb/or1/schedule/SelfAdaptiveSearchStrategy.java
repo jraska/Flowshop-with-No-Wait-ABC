@@ -4,7 +4,7 @@ import com.jraska.common.ArgumentCheck;
 
 import java.util.*;
 
-public class SelfAdaptiveSearchStrategy implements ILocalSearchStrategy {
+public final class SelfAdaptiveSearchStrategy implements ILocalSearchStrategy {
   //region Constants
 
   public static final int DEFAULT_SIZE = 200; //from the article

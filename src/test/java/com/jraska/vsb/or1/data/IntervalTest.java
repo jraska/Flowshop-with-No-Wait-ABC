@@ -38,7 +38,7 @@ public class IntervalTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testCannotCreateBadInterval() throws Exception {
-    new Interval(5, 4); //wil throw error
+    new Interval(5, 4); //will throw error
   }
 
   //endregion

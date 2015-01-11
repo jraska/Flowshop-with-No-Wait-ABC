@@ -9,7 +9,7 @@ import com.jraska.vsb.or1.data.Output;
 import java.util.List;
 
 
-public class BruteForceScheduler implements IScheduler {
+public final class BruteForceScheduler implements IScheduler {
   //region Fields
 
   private final IObjectiveFunction _objectiveFunction;
