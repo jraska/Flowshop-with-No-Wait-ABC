@@ -6,10 +6,7 @@ import com.jraska.vsb.or1.data.Output;
 import com.jraska.vsb.or1.io.SimpleTextParser;
 import com.jraska.vsb.or1.io.ToStringOutputWriter;
 import com.jraska.vsb.or1.schedule.*;
-import com.jraska.vsb.or1.schedule.abc.ABCScheduler;
-import com.jraska.vsb.or1.schedule.abc.Bee;
-import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
-import com.jraska.vsb.or1.schedule.abc.RouletteWheelSelection;
+import com.jraska.vsb.or1.schedule.abc.*;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
 import java.io.*;
@@ -150,7 +147,7 @@ public class Program {
   protected IScheduler createSimpleABCScheduler(Input input) {
     MakespanCounter makespanCounter = new MakespanCounter(input.getJobs());
     RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
-    RouletteWheelSelection wheelSelection = new RouletteWheelSelection();
+    IOnlookerChooser onlookerChooser = new TournamentOnlookerChooser(new RouletteWheelSelection());
 
     Bee[] bees = new Bee[20];
     for (int i = 0; i < 20; i++) {
@@ -158,7 +155,7 @@ public class Program {
       bees[i] = createBee(strategy, makespanCounter);
     }
 
-    ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, getMaxMissThreshold());
+    ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, onlookerChooser, getMaxMissThreshold());
     return abcScheduler;
   }
 
