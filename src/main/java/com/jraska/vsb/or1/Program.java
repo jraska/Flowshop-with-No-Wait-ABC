@@ -7,9 +7,13 @@ import com.jraska.vsb.or1.io.SimpleTextParser;
 import com.jraska.vsb.or1.io.ToStringOutputWriter;
 import com.jraska.vsb.or1.schedule.*;
 import com.jraska.vsb.or1.schedule.abc.*;
+import com.jraska.vsb.or1.schedule.summary.SingleRunSummary;
+import com.jraska.vsb.or1.schedule.summary.Summary;
+import com.jraska.vsb.or1.schedule.summary.SummaryItem;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
@@ -53,49 +57,63 @@ public class Program {
     _out.println("- Reading input took " + stopWatch.getElapsedMs() + " ms");
     stopWatch.restart();
 
+    List<SummaryItem> summaryItems = new ArrayList<SummaryItem>();
+
     for (Input input : inputs) {
       _out.println("--------" + input.getName() + "----------");
 
+      List<SingleRunSummary> singleRunSummaries = new ArrayList<SingleRunSummary>();
+
       IScheduler scheduler = createScheduler(input);
-      Output output = scheduler.schedule(input);
+      StopWatch singleRunStopwatch = new StopWatch();
+      boolean valid = true;
+      for (int i = 0; i < 30; i++) {
+        singleRunStopwatch.start();
+        Output output = scheduler.schedule(input);
+
+        singleRunSummaries.add(new SingleRunSummary(output.getMakespan(), singleRunStopwatch.getElapsedMs()));
+
+        NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
+        List<String> validationResult = validator.validate(output);
+
+        if (!validationResult.isEmpty()) {
+          _out.println();
+          _out.println("-------------------");
+          _out.println("RESULT IS NOT VALID");
+          _out.println("-------------------");
+
+          for (String error : validationResult) {
+            _out.println(error);
+          }
+
+          valid = false;
+        }
+
+        singleRunStopwatch.reset();
+      }
 
       stopWatch.stop();
       _out.println("- Scheduling took " + stopWatch.getElapsedMs() + " ms");
       stopWatch.restart();
 
-      referenceSchedule(input);
+      Output referenceSchedule = referenceSchedule(input);
 
-      stopWatch.stop();
-      _out.println("- Reference scheduling took " + stopWatch.getElapsedMs() + " ms");
-      stopWatch.restart();
+      summaryItems.add(new SummaryItem(referenceSchedule.getMakespan(), singleRunSummaries));
 
-      writeFinalOutput(output);
-
-      stopWatch.stop();
-      _out.println("- Writing output took " + stopWatch.getElapsedMs() + " ms");
-      stopWatch.restart();
-
-      NoWaitFlowShopValidator validator = new NoWaitFlowShopValidator();
-      List<String> validationResult = validator.validate(output);
-
-      stopWatch.stop();
-      _out.println("- Validation took " + stopWatch.getElapsedMs() + " ms");
-      stopWatch.restart();
-
-      if (!validationResult.isEmpty()) {
-        _out.println();
-        _out.println("-------------------");
+      if (valid) {
+        _out.println("VALID RESULT");
+      } else {
         _out.println("RESULT IS NOT VALID");
-        _out.println("-------------------");
-
-        for (String error : validationResult) {
-          _out.println(error);
-        }
       }
 
       _out.println("-----------------------");
+
       _out.println();
     }
+
+    Summary summary = new Summary(summaryItems);
+
+    //TODO: print summary
   }
 
   protected void writeFinalOutput(Output output) {
@@ -133,11 +151,13 @@ public class Program {
     return input;
   }
 
-  protected void referenceSchedule(Input input) {
+  protected Output referenceSchedule(Input input) {
     SimpleScheduler referenceScheduler = new SimpleScheduler();
     Output simple = referenceScheduler.schedule(input);
 
     _out.println("Simple Makespan: " + simple.getMakespan());
+
+    return simple;
   }
 
   protected IScheduler createScheduler(Input input) {
