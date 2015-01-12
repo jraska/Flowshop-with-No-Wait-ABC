@@ -10,6 +10,8 @@ import com.jraska.vsb.or1.schedule.abc.*;
 import com.jraska.vsb.or1.schedule.summary.SingleRunSummary;
 import com.jraska.vsb.or1.schedule.summary.Summary;
 import com.jraska.vsb.or1.schedule.summary.SummaryItem;
+import com.jraska.vsb.or1.schedule.summary.io.HtmlSummaryWriter;
+import com.jraska.vsb.or1.schedule.summary.io.ISummaryWriter;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidator;
 
 import java.io.*;
@@ -17,12 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
+
   //region Main method
 
   public static void main(String args[]) throws Exception {
     Program program = new Program();
     program.run(args);
   }
+
+  //endregion
+
+  //region Constants
+
+  public static final int BEES_COUNT = 50;
+  public static final int MISS_THRESHOLD = 10;
 
   //endregion
 
@@ -98,7 +108,7 @@ public class Program {
 
       Output referenceSchedule = referenceSchedule(input);
 
-      summaryItems.add(new SummaryItem(referenceSchedule.getMakespan(), singleRunSummaries));
+      summaryItems.add(new SummaryItem(input.getName(), referenceSchedule.getMakespan(), singleRunSummaries));
 
       if (valid) {
         _out.println("VALID RESULT");
@@ -112,8 +122,8 @@ public class Program {
     }
 
     Summary summary = new Summary(summaryItems);
-
-    //TODO: print summary
+    ISummaryWriter writer = new HtmlSummaryWriter();
+    writer.write(summary, _out);
   }
 
   protected void writeFinalOutput(Output output) {
@@ -169,8 +179,8 @@ public class Program {
     RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(input.getJobsCount());
     IOnlookerChooser onlookerChooser = new TournamentOnlookerChooser(new RouletteWheelSelection());
 
-    Bee[] bees = new Bee[20];
-    for (int i = 0; i < 20; i++) {
+    Bee[] bees = new Bee[BEES_COUNT];
+    for (int i = 0; i < BEES_COUNT; i++) {
       ILocalSearchStrategy strategy = new SelfAdaptiveSearchStrategy(makespanCounter);
       bees[i] = createBee(strategy, makespanCounter);
     }
@@ -180,7 +190,7 @@ public class Program {
   }
 
   protected int getMaxMissThreshold() {
-    return 10;
+    return MISS_THRESHOLD;
   }
 
   protected Bee createBee(ILocalSearchStrategy strategy, IObjectiveFunction function) {

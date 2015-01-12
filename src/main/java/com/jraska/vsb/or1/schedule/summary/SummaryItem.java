@@ -8,6 +8,7 @@ import java.util.List;
 public class SummaryItem {
   //region Fields
 
+  private final String _name;
   private final int _simpleMakespan;
   private final List<SingleRunSummary> _singleRuns;
 
@@ -15,13 +16,16 @@ public class SummaryItem {
 
   //region Constructors
 
-  public SummaryItem(int simpleMakespan, List<SingleRunSummary> singleRuns) {
+  public SummaryItem(String name, int simpleMakespan, List<SingleRunSummary> singleRuns) {
+    ArgumentCheck.notNull(name);
+
     if (simpleMakespan < 0) {
       throw new IllegalArgumentException("simpleMakespan is negative: " + simpleMakespan);
     }
 
     ArgumentCheck.notNull(singleRuns);
 
+    _name = name;
     _simpleMakespan = simpleMakespan;
     _singleRuns = Collections.unmodifiableList(singleRuns);
   }
@@ -29,6 +33,10 @@ public class SummaryItem {
   //endregion
 
   //region Properties
+
+  public String getName() {
+    return _name;
+  }
 
   public int getSimpleMakespan() {
     return _simpleMakespan;
@@ -102,6 +110,16 @@ public class SummaryItem {
     double deviation = Math.sqrt(deviationsSum);
 
     return deviation;
+  }
+
+  public double getAverageTime() {
+    long sum = 0;
+
+    for (SingleRunSummary run : _singleRuns) {
+      sum += run.getTime();
+    }
+
+    return sum / (double) getRunsCount();
   }
 
   //endregion

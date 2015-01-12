@@ -59,7 +59,7 @@ public class SummaryItemTest {
       singleRunSummaries.add(new SingleRunSummary(makespans[i], durations[i]));
     }
 
-    return new SummaryItem(10, singleRunSummaries);
+    return new SummaryItem("Test", 10, singleRunSummaries);
   }
 
   //endregion

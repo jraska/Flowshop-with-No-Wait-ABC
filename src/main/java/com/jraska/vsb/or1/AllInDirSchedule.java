@@ -1,16 +1,33 @@
 package com.jraska.vsb.or1;
 
 import com.jraska.vsb.or1.data.Output;
+import com.jraska.vsb.or1.io.MultiOutputStream;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class AllInDirSchedule extends Program {
   //region Main methods
 
   public static void main(String[] args) throws Exception {
-    AllInDirSchedule allInDirSchedule = new AllInDirSchedule();
+    PrintStream output = createOutput();
+
+    AllInDirSchedule allInDirSchedule = new AllInDirSchedule(output);
     allInDirSchedule.run(args);
+
+    output.close();
+  }
+
+  //endregion
+
+  //region Constructors
+
+  public AllInDirSchedule() {
+  }
+
+  public AllInDirSchedule(PrintStream out) {
+    super(out);
   }
 
   //endregion
@@ -60,9 +77,40 @@ public class AllInDirSchedule extends Program {
           }
         }
 
+
         return true;
       }
     };
+  }
+
+  protected static PrintStream createOutput() {
+    try {
+      FileOutputStream fileOutputStream = new FileOutputStream(createNewFile());
+      OutputStream[] outputs = {fileOutputStream, System.out};
+      List<OutputStream> outputStreams = Arrays.asList(outputs);
+      MultiOutputStream multiOutputStream = new MultiOutputStream(outputStreams);
+
+      return new PrintStream(multiOutputStream);
+    }
+    catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected static File createNewFile() {
+    File file = new File("output.html");
+    if (file.exists()) {
+      file.delete();
+    }
+
+    try {
+      file.createNewFile();
+    }
+    catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return file;
   }
 
   //endregion
