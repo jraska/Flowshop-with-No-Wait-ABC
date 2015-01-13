@@ -181,8 +181,8 @@ public class Program {
 
     Bee[] bees = new Bee[BEES_COUNT];
     for (int i = 0; i < BEES_COUNT; i++) {
-      ILocalSearchStrategy strategy = new Swap();
-//      ILocalSearchStrategy strategy = new SelfAdaptiveSearchStrategy(makespanCounter);
+//      ILocalSearchStrategy strategy = new Swap();
+      ILocalSearchStrategy strategy = new SelfAdaptiveSearchStrategy(makespanCounter);
       bees[i] = createBee(strategy, makespanCounter);
     }
 

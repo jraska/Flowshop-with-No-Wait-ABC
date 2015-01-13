@@ -149,6 +149,10 @@ public class HtmlSummaryWriter implements ISummaryWriter {
     for (int stepped = 0; stepped < item.getRunsCount(); stepped += step) {
       beginTag("tr");
 
+      beginTag("td");
+      write("Sequence no.");
+      endTag();
+
       for (int i = overallIndex; i < overallIndex + step; i++) {
         beginTag("td");
 
@@ -161,6 +165,10 @@ public class HtmlSummaryWriter implements ISummaryWriter {
       endTag(); //tr
 
       beginTag("tr");
+
+      beginTag("td");
+      write("Makespan");
+      endTag();
 
       for (int i = overallIndex; i < overallIndex + step; i++) {
         beginTag("td");
