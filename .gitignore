@@ -61,4 +61,4 @@ Status API Training Shop Blog About
 
 .gradle
 
-output.html
+*.html
