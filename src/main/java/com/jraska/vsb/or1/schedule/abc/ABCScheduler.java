@@ -22,6 +22,7 @@ public class ABCScheduler implements IScheduler {
   private final IPositionGenerator _positionGenerator;
   private final int _onlookersCount;
   private final IOnlookerChooser _onlookerChooser;
+  private final int _numOfIterations;
 
 
   private int[] _bestSolution;
@@ -31,7 +32,8 @@ public class ABCScheduler implements IScheduler {
 
   //region Constructors
 
-  public ABCScheduler(Bee[] bees, IPositionGenerator generator, IOnlookerChooser onlookerChooser, int attemptsThreshold) {
+  public ABCScheduler(Bee[] bees, IPositionGenerator generator, IOnlookerChooser onlookerChooser,
+                      int attemptsThreshold, int numOfIterations) {
     ArgumentCheck.notNull(bees);
     ArgumentCheck.notNull(generator);
     ArgumentCheck.notNull(onlookerChooser);
@@ -47,6 +49,7 @@ public class ABCScheduler implements IScheduler {
 
     //same size of onlookers as bees
     _onlookersCount = bees.length;
+    _numOfIterations = numOfIterations;
   }
 
   //endregion
@@ -65,7 +68,7 @@ public class ABCScheduler implements IScheduler {
       scout(bee);
     }
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < _numOfIterations; i++) {
       //search near bees
       double fitnessSum = 0;
       for (Bee bee : _bees) {

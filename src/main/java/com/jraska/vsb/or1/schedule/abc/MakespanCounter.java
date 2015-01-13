@@ -9,8 +9,8 @@ import java.util.Arrays;
 public final class MakespanCounter implements IObjectiveFunction {
   //region Fields
 
-  private final int mJobsLength;
-  private final Job[] mJobs;
+  private final int _jobsLength;
+  private final Job[] _jobs;
 
   //endregion
 
@@ -19,8 +19,8 @@ public final class MakespanCounter implements IObjectiveFunction {
   public MakespanCounter(Job[] jobs) {
     ArgumentCheck.notNull(jobs);
 
-    mJobsLength = jobs.length;
-    mJobs = Arrays.copyOf(jobs, mJobsLength);
+    _jobsLength = jobs.length;
+    _jobs = Arrays.copyOf(jobs, _jobsLength);
   }
 
   //endregion
@@ -37,21 +37,21 @@ public final class MakespanCounter implements IObjectiveFunction {
   //region Methods
 
   public int countMakespan(int[] solution) {
-    if (solution.length != mJobsLength) {
+    if (solution.length != _jobsLength) {
       String message = "Solution length %d and Jobs length %d does not match";
-      throw new IllegalArgumentException(String.format(message, solution.length, mJobsLength));
+      throw new IllegalArgumentException(String.format(message, solution.length, _jobsLength));
     }
 
     int delaySum = 0;
 
-    for (int i = 1; i < mJobsLength; i++) {
-      Job previous = mJobs[solution[i - 1]];
-      Job next = mJobs[solution[i]];
+    for (int i = 1; i < _jobsLength; i++) {
+      Job previous = _jobs[solution[i - 1]];
+      Job next = _jobs[solution[i]];
 
       delaySum += previous.getDepartureDelay(next);
     }
 
-    int lastJobDuration = mJobs[solution[mJobsLength - 1]].getTotalDuration();
+    int lastJobDuration = _jobs[solution[_jobsLength - 1]].getTotalDuration();
 
     return delaySum + lastJobDuration;
   }

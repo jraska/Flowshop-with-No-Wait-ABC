@@ -143,29 +143,37 @@ public class HtmlSummaryWriter implements ISummaryWriter {
   private void writeValuesTable(SummaryItem item) throws IOException {
     beginTag("table");
 
-    beginTag("tr");
+    int step = 10;
+    int overallIndex = 0;
 
-    for (int i = 0; i < item.getRunsCount(); i++) {
-      beginTag("td");
+    for (int stepped = 0; stepped < item.getRunsCount(); stepped += step) {
+      beginTag("tr");
 
-      write(i + 1);
+      for (int i = overallIndex; i < overallIndex + step; i++) {
+        beginTag("td");
 
-      endTag();
+        write(i + 1);
+        write(".");
+
+        endTag();
+      }
+
+      endTag(); //tr
+
+      beginTag("tr");
+
+      for (int i = overallIndex; i < overallIndex + step; i++) {
+        beginTag("td");
+
+        write(item.getSingleRuns().get(i).getResult());
+
+        endTag();
+      }
+
+      endTag(); //tr
+
+      overallIndex += step;
     }
-
-    endTag(); //tr
-
-    beginTag("tr");
-
-    for (int i = 0; i < item.getRunsCount(); i++) {
-      beginTag("td");
-
-      write(item.getSingleRuns().get(i).getResult());
-
-      endTag();
-    }
-
-    endTag(); //tr
     endTag(); //table
   }
 
