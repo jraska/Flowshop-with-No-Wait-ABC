@@ -141,9 +141,9 @@ public class HtmlSummaryWriter implements ISummaryWriter {
   }
 
   private void writeValuesTable(SummaryItem item) throws IOException {
-    beginTag("table");
+    beginTag("table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"");
 
-    int step = 10;
+    int step = 15;
     int overallIndex = 0;
 
     for (int stepped = 0; stepped < item.getRunsCount(); stepped += step) {
@@ -157,7 +157,7 @@ public class HtmlSummaryWriter implements ISummaryWriter {
         beginTag("td");
 
         write(i + 1);
-        write(".");
+//        write(".");
 
         endTag();
       }
