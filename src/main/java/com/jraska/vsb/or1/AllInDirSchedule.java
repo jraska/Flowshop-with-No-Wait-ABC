@@ -78,7 +78,7 @@ public class AllInDirSchedule extends Program {
         }
 
 
-        return true;
+        return pureName.equals("41");
       }
     };
   }
