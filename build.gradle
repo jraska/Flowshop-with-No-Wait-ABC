@@ -1,4 +1,6 @@
 apply plugin: 'java'
+apply plugin: 'jacoco'
+
 version = '1.0'
 
 repositories {
@@ -15,4 +17,13 @@ jar {
         attributes 'Main-Class': 'com.jraska.vsb.or1.Program'
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport
 
