@@ -1,6 +1,7 @@
 package com.jraska.vsb.or1.schedule.summary.io;
 
 import com.jraska.common.ArgumentCheck;
+import com.jraska.vsb.or1.exception.ABCRuntimeException;
 import com.jraska.vsb.or1.schedule.summary.Summary;
 import com.jraska.vsb.or1.schedule.summary.SummaryItem;
 
@@ -33,7 +34,7 @@ public class HtmlSummaryWriter implements ISummaryWriter {
       writeInternal(summary, outputStream);
     }
     catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ABCRuntimeException(e);
     }
   }
 
@@ -207,7 +208,7 @@ public class HtmlSummaryWriter implements ISummaryWriter {
       _bufferedWriter.append(text);
     }
     catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ABCRuntimeException(e);
     }
   }
 

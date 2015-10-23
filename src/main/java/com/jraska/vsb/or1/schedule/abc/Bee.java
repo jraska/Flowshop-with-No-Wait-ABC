@@ -11,8 +11,8 @@ import com.jraska.vsb.or1.schedule.IPositionGenerator;
 public class Bee {
   //region Fields
 
-  int[] _position;
-  int _positionValue;
+  protected int[] _position;
+  protected int _positionValue;
   private double _fitnessValue;
 
   private int _countOfMisses;

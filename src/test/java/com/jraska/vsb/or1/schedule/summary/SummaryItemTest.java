@@ -50,7 +50,7 @@ public class SummaryItemTest {
 
   //region Methods
 
-  static SummaryItem getTestSummaryItem() {
+  public static SummaryItem getTestSummaryItem() {
     int[] makespans = {3, 4, 6, 8, 9, 2};
     long[] durations = {45, 167, 128, 121, 89, 25};
 

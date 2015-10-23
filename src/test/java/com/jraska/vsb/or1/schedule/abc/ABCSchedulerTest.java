@@ -8,6 +8,10 @@ import com.jraska.vsb.or1.schedule.Swap;
 import com.jraska.vsb.or1.schedule.validation.NoWaitFlowShopValidatorTest;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+
 public class ABCSchedulerTest {
   //region Test Methods
 
@@ -27,6 +31,8 @@ public class ABCSchedulerTest {
 
     ABCScheduler abcScheduler = new ABCScheduler(bees, randomPositionGenerator, wheelSelection, 5, 1000);
     Output schedule = abcScheduler.schedule(input);
+
+    assertThat(schedule, not(nullValue()));
 
     NoWaitFlowShopValidatorTest.validate(schedule);
 

@@ -90,14 +90,14 @@ public final class JobSchedule {
     throw new IllegalArgumentException("There is no such interval in this job.");
   }
 
-  static Interval[] countIntervals(int[] durations, int start) {
+  private static Interval[] countIntervals(int[] durations, int start) {
     int[] startingTimes = countStartingTimes(durations, start);
     int[] endingTimes = countDepartureTimes(durations, start);
 
     return countIntervals(startingTimes, endingTimes);
   }
 
-  static Interval[] countIntervals(int[] startingTimes, int[] endingTimes) {
+  private static Interval[] countIntervals(int[] startingTimes, int[] endingTimes) {
     Interval[] intervals = new Interval[startingTimes.length];
     for (int i = 0; i < startingTimes.length; i++) {
       intervals[i] = new Interval(startingTimes[i], endingTimes[i]);
@@ -106,7 +106,7 @@ public final class JobSchedule {
     return intervals;
   }
 
-  static int[] countDepartureTimes(int[] durations, int start) {
+  private static int[] countDepartureTimes(int[] durations, int start) {
     int[] times = countStartingTimes(durations, start);
 
     for (int i = 0; i < durations.length; i++) {
@@ -116,7 +116,7 @@ public final class JobSchedule {
     return times;
   }
 
-  static int[] countStartingTimes(int[] durations, final int start) {
+  private static int[] countStartingTimes(int[] durations, final int start) {
     int[] startingTimes = new int[durations.length];
 
     int time = start;

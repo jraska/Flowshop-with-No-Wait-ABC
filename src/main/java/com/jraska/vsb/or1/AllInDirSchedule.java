@@ -1,6 +1,7 @@
 package com.jraska.vsb.or1;
 
 import com.jraska.vsb.or1.data.Output;
+import com.jraska.vsb.or1.exception.ABCRuntimeException;
 import com.jraska.vsb.or1.io.MultiOutputStream;
 
 import java.io.*;
@@ -78,7 +79,7 @@ public class AllInDirSchedule extends Program {
         }
 
 
-        return pureName.equals("41");
+        return "41".equals(pureName);
       }
     };
   }
@@ -93,7 +94,7 @@ public class AllInDirSchedule extends Program {
       return new PrintStream(multiOutputStream);
     }
     catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new ABCRuntimeException(e);
     }
   }
 
@@ -107,7 +108,7 @@ public class AllInDirSchedule extends Program {
       file.createNewFile();
     }
     catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ABCRuntimeException(e);
     }
 
     return file;

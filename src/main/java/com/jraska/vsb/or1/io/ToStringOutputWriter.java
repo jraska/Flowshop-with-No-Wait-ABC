@@ -2,6 +2,7 @@ package com.jraska.vsb.or1.io;
 
 import com.jraska.common.ArgumentCheck;
 import com.jraska.vsb.or1.data.Output;
+import com.jraska.vsb.or1.exception.ABCRuntimeException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,7 +21,7 @@ public class ToStringOutputWriter implements IOutputWriter {
       outputStream.write("\n".getBytes());
     }
     catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ABCRuntimeException(e);
     }
   }
 
