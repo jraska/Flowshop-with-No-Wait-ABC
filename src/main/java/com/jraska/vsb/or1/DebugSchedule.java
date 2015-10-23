@@ -6,18 +6,18 @@ import com.jraska.vsb.or1.schedule.abc.Bee;
 import com.jraska.vsb.or1.schedule.abc.DebugBee;
 
 public class DebugSchedule extends Program {
+  //region Fields
+
+  private int _beeIndex;
+
+  //endregion
+
   //region Main method
 
   public static void main(String[] args) throws Exception {
     DebugSchedule debugSchedule = new DebugSchedule();
     debugSchedule.run(args);
   }
-
-  //endregion
-
-  //region Fields
-
-  private int _beeIndex;
 
   //endregion
 

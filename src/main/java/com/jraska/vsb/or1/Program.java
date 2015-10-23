@@ -20,15 +20,6 @@ import java.util.List;
 
 public class Program {
 
-  //region Main method
-
-  public static void main(String args[]) throws Exception {
-    Program program = new Program();
-    program.run(args);
-  }
-
-  //endregion
-
   //region Constants
 
   public static final int BEES_COUNT = 50;
@@ -54,7 +45,16 @@ public class Program {
 
   //endregion
 
-  //region methods
+  //region Methods
+
+  //region Main method
+
+  public static void main(String args[]) throws Exception {
+    Program program = new Program();
+    program.run(args);
+  }
+
+  //endregion
 
   public void run(String args[]) throws Exception {
     StopWatch stopWatch = new StopWatch();
