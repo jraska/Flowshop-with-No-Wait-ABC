@@ -99,11 +99,9 @@ public class ABCScheduler implements IScheduler {
 
   protected void localSearch(Bee bee) {
     boolean foundBetter = bee.searchForNewPosition();
-    if (foundBetter) {
-      if (bee._positionValue < _bestValue) {
-        _bestValue = bee._positionValue;
-        _bestSolution = bee._position;
-      }
+    if (foundBetter && bee._positionValue < _bestValue) {
+      _bestValue = bee._positionValue;
+      _bestSolution = bee._position;
     }
   }
 

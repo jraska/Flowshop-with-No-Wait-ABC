@@ -28,7 +28,7 @@ public class SelfAdaptiveStrategyTest {
   public void testFillsWinningList() throws Exception {
     SelfAdaptiveSearchStrategy strategy = new SelfAdaptiveSearchStrategy(new GettingBetterFunction());
 
-    for (int i = 0, size = strategy.getSize(); i < size; i++) {
+    for (int i = 0; i < strategy.getSize(); i++) {
       strategy.getNext(new int[2]);
     }
 
@@ -39,7 +39,7 @@ public class SelfAdaptiveStrategyTest {
   public void testUsesWinningList() throws Exception {
     SelfAdaptiveSearchStrategy strategy = new SelfAdaptiveSearchStrategy(new GettingBetterFunction());
 
-    for (int i = 0, size = strategy.getSize(); i < size; i++) {
+    for (int i = 0; i < strategy.getSize(); i++) {
       strategy.getNext(new int[2]);
     }
 
@@ -50,7 +50,8 @@ public class SelfAdaptiveStrategyTest {
     assertThat(strategy.getWinningNeighbourStrategies().size(), equalTo(0));
 
     ArrayList<ILocalSearchStrategy> refilledStrategies = new ArrayList<ILocalSearchStrategy>(strategy.getNeighboursStrategies());
-    for (int i = 0, size = strategy.getSize() / 2; i < size; i++) { // / 2 because only first part should fit
+    final int size = strategy.getSize() / 2; // / 2 because only first part should fit
+    for (int i = 0; i < size; i++) {
       assertThat(refilledStrategies.get(i), equalTo(winningStrategies.get(i)));
     }
   }

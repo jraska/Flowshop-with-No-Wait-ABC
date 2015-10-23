@@ -76,7 +76,8 @@ public final class Job {
 
     int prevLeaveTime = 0;
     int nextComeTime = 0;
-    for (int i = 0, end = length - 1; i < end; i++) {
+    final int end = length - 1;
+    for (int i = 0; i < end; i++) {
       prevLeaveTime += _durations[i + 1];
       nextComeTime += nextDurations[i];
 
