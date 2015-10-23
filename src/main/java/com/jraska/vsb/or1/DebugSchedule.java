@@ -14,7 +14,7 @@ public class DebugSchedule extends Program {
 
   //region Main method
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     DebugSchedule debugSchedule = new DebugSchedule();
     debugSchedule.run(args);
   }

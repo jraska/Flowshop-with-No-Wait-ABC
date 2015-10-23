@@ -11,7 +11,7 @@ import java.util.List;
 public class AllInDirSchedule extends Program {
   //region Main methods
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     PrintStream output = createOutput();
 
     AllInDirSchedule allInDirSchedule = new AllInDirSchedule(output);
@@ -101,11 +101,15 @@ public class AllInDirSchedule extends Program {
   protected static File createNewFile() {
     File file = new File("output.html");
     if (file.exists()) {
-      file.delete();
+      if (!file.delete()) {
+        throw new ABCRuntimeException("Cannot delete file " + file);
+      }
     }
 
     try {
-      file.createNewFile();
+      if (!file.createNewFile()) {
+        throw new ABCRuntimeException("Cannot create file " + file);
+      }
     }
     catch (IOException e) {
       throw new ABCRuntimeException(e);

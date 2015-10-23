@@ -49,19 +49,26 @@ public class Program {
 
   //region Main method
 
-  public static void main(String args[]) throws Exception {
+  public static void main(String args[]) {
     Program program = new Program();
     program.run(args);
   }
 
   //endregion
 
-  public void run(String args[]) throws Exception {
+  public void run(String args[]) {
     StopWatch stopWatch = new StopWatch();
 
     stopWatch.start();
 
-    Input[] inputs = readInputs(args);
+    Input[] inputs;
+    try {
+      inputs = readInputs(args);
+    }
+    catch (IOException e) {
+      _out.println("Error reading input " + e);
+      return;
+    }
 
     stopWatch.stop();
     _out.println("- Reading input took " + stopWatch.getElapsedMs() + " ms");

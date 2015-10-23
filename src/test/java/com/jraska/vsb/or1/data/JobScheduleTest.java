@@ -6,6 +6,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class JobScheduleTest {
+  //region Constants
+
+  public static final String TEST_JOB = "TestJob";
+
+  //endregion
+
   //region Test Methods
 
   @Test
@@ -13,7 +19,7 @@ public class JobScheduleTest {
     int[] durations = {5, 3, 7, 2};
 
     int startTime = 5;
-    JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), startTime);
+    JobSchedule jobSchedule = new JobSchedule(new Job(TEST_JOB, durations), startTime);
 
     int[] startingTimes = jobSchedule.getStartingTimes();
 
@@ -26,7 +32,7 @@ public class JobScheduleTest {
     int[] durations = {5, 3, 7, 2};
 
     int startTime = 3;
-    JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), startTime);
+    JobSchedule jobSchedule = new JobSchedule(new Job(TEST_JOB, durations), startTime);
 
     int[] endingTimes = jobSchedule.getDepartureTimes();
 
@@ -39,7 +45,7 @@ public class JobScheduleTest {
     int[] durations = {5, 3, 7, 2};
 
     int startTime = 4;
-    JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), startTime);
+    JobSchedule jobSchedule = new JobSchedule(new Job(TEST_JOB, durations), startTime);
 
     Interval[] expected = {new Interval(4, 9), new Interval(9, 12), new Interval(12, 19), new Interval(19, 21)};
 
@@ -50,7 +56,7 @@ public class JobScheduleTest {
   public void testCalculateNextStartTime() throws Exception {
     int[] durations = {5, 4, 4, 3};
 
-    JobSchedule jobSchedule = new JobSchedule(new Job("TestJob", durations), 0);
+    JobSchedule jobSchedule = new JobSchedule(new Job(TEST_JOB, durations), 0);
 
     int[] nextDurations = {5, 4, 4, 6};
     Job nextJob = new Job("TestJob2", nextDurations);

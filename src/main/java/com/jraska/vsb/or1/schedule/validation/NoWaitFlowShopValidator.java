@@ -64,7 +64,7 @@ public class NoWaitFlowShopValidator implements IOutputValidator {
 
     StringBuilder b = new StringBuilder();
 
-    b.append("Error on machine ").append(problemMachineIndex + 1).append("\n");
+    b.append("Error on machine ").append(problemMachineIndex + 1).append('\n');
 
     b.append("Jobs ").append(first.mJob.getJobName()).append(" and ").append(second.mJob.getJobName());
     b.append(" intersects with working intervals ");

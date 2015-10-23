@@ -9,7 +9,7 @@ import com.jraska.vsb.or1.schedule.abc.MakespanCounter;
 public class BruteForceComparison extends Program {
   //region Main method
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     BruteForceComparison bruteForceComparison = new BruteForceComparison();
     bruteForceComparison.run(args);
   }
